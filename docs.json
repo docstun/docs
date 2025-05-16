@@ -7,7 +7,7 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "./assets/images/phrase-logo.svg",
+  "favicon": "./assets/images/phrase-favicon.svg",
   "seo": {
     "metatags": {
       "robots": "noindex"
