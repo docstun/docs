@@ -7,69 +7,137 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "./assets/images/phrase-favicon.svg",
+  "favicon": "/assets/images/phrase-favicon.svg",
   "seo": {
     "metatags": {
       "robots": "noindex"
     }
   },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guides",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": "Home",
-            "pages": [
-              "docs/01-home/api-overview"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "pages": [
-              "docs/02-api-reference/phrase-strings",
-              "docs/02-api-reference/phrase-tms",
-              "docs/02-api-reference/phrase-language-ai",
-              "docs/02-api-reference/phrase-bifrost"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "pages": [
-              "docs/03-developer-tools/phrase-strings-cli",
+            "tab": "Guides",
+            "groups": [
               {
-                "group": "Phrase Strings API Clients",
+                "group": "Home",
                 "pages": [
-                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-go",
-                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-java",
-                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-js",
-                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-php",
-                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-python",
-                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-ruby"
+                  "docs/01-home/api-overview"
+                ]
+              },
+              {
+                "group": "API Reference",
+                "pages": [
+                  "docs/02-api-reference/phrase-strings",
+                  "docs/02-api-reference/phrase-tms",
+                  "docs/02-api-reference/phrase-language-ai",
+                  "docs/02-api-reference/phrase-bifrost"
+                ]
+              },
+              {
+                "group": "Developer Tools",
+                "pages": [
+                  "docs/03-developer-tools/phrase-strings-cli",
+                  {
+                    "group": "Phrase Strings API Clients",
+                    "pages": [
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-go",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-java",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-js",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-php",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-python",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-ruby"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  "docs/04-guides/general",
+                  "docs/04-guides/phrase-strings",
+                  "docs/04-guides/phrase-tms",
+                  "docs/04-guides/build-an-integration-with-phrase"
                 ]
               }
             ]
           },
           {
-            "group": "Guides",
-            "pages": [
-              "docs/04-guides/general",
-              "docs/04-guides/phrase-strings",
-              "docs/04-guides/phrase-tms",
-              "docs/04-guides/build-an-integration-with-phrase"
+            "tab": "Strings API",
+            "groups": [
+              {
+                "group": "API Documentation",
+                "openapi": {
+                  "source": "./openapi/phrase-strings.json",
+                  "directory": "strings-api"
+                }
+              }
             ]
           }
         ]
       },
       {
-        "tab": "Strings API",
-        "groups": [
+        "language": "de",
+        "tabs": [
           {
-            "group": "API Documentation",
-            "openapi": {
-              "source": "./openapi/phrase-strings.json",
-              "directory": "strings-api"
-            }
+            "tab": "Anleitungen",
+            "groups": [
+              {
+                "group": "Startseite",
+                "pages": [
+                  "docs/01-home/api-overview"
+                ]
+              },
+              {
+                "group": "API-Dokumentation",
+                "pages": [
+                  "docs/02-api-reference/phrase-strings",
+                  "docs/02-api-reference/phrase-tms",
+                  "docs/02-api-reference/phrase-language-ai",
+                  "docs/02-api-reference/phrase-bifrost"
+                ]
+              },
+              {
+                "group": "Entwicklertools",
+                "pages": [
+                  "docs/03-developer-tools/phrase-strings-cli",
+                  {
+                    "group": "Phrase Strings API-Clients",
+                    "pages": [
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-go",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-java",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-js",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-php",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-python",
+                      "docs/03-developer-tools/phrase-strings-api-clients/phrase-ruby"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Anleitungen",
+                "pages": [
+                  "docs/04-guides/general",
+                  "docs/04-guides/phrase-strings",
+                  "docs/04-guides/phrase-tms",
+                  "docs/04-guides/build-an-integration-with-phrase"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Strings API",
+            "groups": [
+              {
+                "group": "API-Dokumentation",
+                "openapi": {
+                  "source": "./openapi/phrase-strings.json",
+                  "directory": "strings-api"
+                }
+              }
+            ]
           }
         ]
       }
