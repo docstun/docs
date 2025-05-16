@@ -1,101 +1,88 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Phrase Developer Portal",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "./assets/images/phrase-logo.svg",
+  "seo": {
+    "metatags": {
+      "robots": "noindex"
+    }
+  },
   "navigation": {
     "tabs": [
       {
         "tab": "Guides",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Home",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "docs/01-home/api-overview"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "API Reference",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "docs/02-api-reference/phrase-strings",
+              "docs/02-api-reference/phrase-tms",
+              "docs/02-api-reference/phrase-language-ai",
+              "docs/02-api-reference/phrase-bifrost"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "docs/03-developer-tools/phrase-strings-cli",
+              {
+                "group": "Phrase Strings API Clients",
+                "pages": [
+                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-go",
+                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-java",
+                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-js",
+                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-php",
+                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-python",
+                  "docs/03-developer-tools/phrase-strings-api-clients/phrase-ruby"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "docs/04-guides/general",
+              "docs/04-guides/phrase-strings",
+              "docs/04-guides/phrase-tms",
+              "docs/04-guides/build-an-integration-with-phrase"
             ]
           }
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "Strings API",
         "groups": [
           {
             "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
+            "openapi": {
+              "source": "./openapi/phrase-strings.json",
+              "directory": "strings-api"
+            }
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
+    "light": "/assets/images/phrase-logo-light.svg",
+    "dark": "/assets/images/phrase-logo-light.svg"
   },
   "footer": {
     "socials": {
       "x": "https://x.com/mintlify",
-      "github": "https://github.com/phrase",
+      "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
   }
