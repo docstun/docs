@@ -81,7 +81,7 @@
                 "group": "API Documentation",
                 "openapi": {
                   "source": "./openapi/phrase-strings.json",
-                  "directory": "api/strings"
+                  "directory": "en/api/strings"
                 }
               }
             ]

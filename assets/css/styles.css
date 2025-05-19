@@ -1,6 +1,5 @@
 table {
   display: table !important;
-  table-layout: fixed !important;
   border-collapse: collapse;
 }
 
