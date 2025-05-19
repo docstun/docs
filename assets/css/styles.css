@@ -1,0 +1,10 @@
+table {
+  display: table !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+table td {
+  border: solid 1px #dadada;
+  padding: 8px 16px !important;
+}

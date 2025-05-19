@@ -1,0 +1,71 @@
+---
+title: Pagination
+---
+
+Endpoints that return a list or resources will usually return paginated results and include 25 items by default. To access further pages, use the `page` parameter:
+```
+$ curl -u EMAIL_OR_ACCESS_TOKEN "https://api.phrase.com/v2/projects?page=2"
+```
+Some endpoints also allow a custom page size by using the `per_page` parameter:
+```
+$ curl -u EMAIL_OR_ACCESS_TOKEN "https://api.phrase.com/v2/projects?page=2&per_page=50"
+```
+Unless specified otherwise in the description of the respective endpoint, `per_page` allows you to specify a page size up to 100 items.
+
+## Link-Headers
+We provide you with pagination URLs in the [Link Header field](http://tools.ietf.org/html/rfc5988). Make use of this information to avoid building pagination URLs yourself.
+```
+Link: <https://api.phrase.com/v2/projects?page=1>; rel="first", <https://api.phrase.com/v2/projects?page=3>; rel="prev", <https://api.phrase.com/v2/projects?page=5>; rel="next", <https://api.phrase.com/v2/projects?page=9>; rel="last"
+```
+Possible `rel` values are:
+
+| Value | Description                        |
+|-------|------------------------------------|
+| next  | URL of the next page of results    |
+| last  | URL of the last page of results    |
+| first | URL of the first page of results   |
+| prev  | URL of the previous page of results|
+
+## Rate Limiting
+All API endpoints are subject to rate limiting to ensure good performance for all customers. The rate limit is calculated per user:
+
+- 1000 requests per 5 minutes
+- 4 concurrent (parallel) requests
+
+For your convenience we send information on the current rate limit within the response headers:
+
+| Header                  | Description                                                       |
+|-------------------------|-------------------------------------------------------------------|
+| X-Rate-Limit-Limit      | Number of max requests allowed in the current time period         |
+| X-Rate-Limit-Remaining  | Number of remaining requests in the current time period           |
+| X-Rate-Limit-Reset      | Timestamp of end of current time period as UNIX timestamp         |
+
+If you should run into the rate limit, you will receive the HTTP status code `429: Too many requests`.
+
+If you should need higher rate limits, [contact us](https://phrase.com/contact).
+
+## Conditional GET requests / HTTP Caching
+
+Note: Conditional GET requests are currently only supported for `locales#download` and `translations#index`
+
+We will return an ETag or Last-Modified header with most GET requests. When you request a resource we recommend to store this value and submit them on subsequent requests as `If-Modified-Since` and `If-None-Match` headers. If the resource has not changed in the meantime, we will return the status `304 Not Modified` instead of rendering and returning the resource again. In most cases this is less time-consuming and makes your application/integration faster.
+
+Please note that all conditional requests that return a response with status 304 don't count against your rate limits.
+```
+$ curl -i -u EMAIL_OR_ACCESS_TOKEN "https://api.phrase.com/v2/projects/1234abcd1234abcdefefabcd1234efab/locales/en/download"
+HTTP/1.1 200 OK
+ETag: "abcd1234abcdefefabcd1234efab1234"
+Last-Modified: Wed, 28 Jan 2015 15:31:30 UTC
+Status: 200 OK
+
+$ curl -i -u EMAIL_OR_ACCESS_TOKEN "https://api.phrase.com/v2/projects/1234abcd1234abcdefefabcd1234efab/locales/en/download" -H 'If-None-Match: "abcd1234abcdefefabcd1234efab1234"'
+HTTP/1.1 304 Not Modified
+ETag: "abcd1234abcdefefabcd1234efab1234"
+Last-Modified: Wed, 28 Jan 2015 15:31:30 UTC
+Status: 304 Not Modified
+
+$ curl -i -u EMAIL_OR_ACCESS_TOKEN "https://api.phrase.com/v2/projects/1234abcd1234abcdefefabcd1234efab/locales/en/download" -H "If-Modified-Since: Wed, 28 Jan 2015 15:31:30 UTC"
+HTTP/1.1 304 Not Modified
+Last-Modified: Wed, 28 Jan 2015 15:31:30 UTC
+Status: 304 Not Modified
+```

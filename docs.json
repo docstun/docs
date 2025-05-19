@@ -68,16 +68,20 @@
             "tab": "Strings API",
             "groups": [
               {
-                "group": "API Reference",
+                "group": "Overview",
                 "pages": [
-                  "en/api/strings/overview"
+                  "en/api/strings/introduction",
+                  "en/api/strings/getting-started",
+                  "en/api/strings/authentication",
+                  "en/api/strings/pagination",
+                  "en/api/strings/usage-examples"
                 ]
               },
               {
                 "group": "API Documentation",
                 "openapi": {
                   "source": "./openapi/phrase-strings.json",
-                  "directory": "en/api/strings"
+                  "directory": "api/strings"
                 }
               }
             ]

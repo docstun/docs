@@ -1,0 +1,49 @@
+---
+title: Authentication
+---
+
+There are two different ways to authenticate when performing API requests:
+
+- E-Mail and password
+- Oauth Access Token
+
+## E-Mail and password
+To get started easily, you can use HTTP Basic authentication with your email and password:
+```
+$ curl -u username:password "https://api.phrase.com/v2/projects"
+```
+
+## OAuth via Access Tokens
+You can create and manage access tokens in your [profile settings](https://app.phrase.com/settings/oauth_access_tokens) in Translation Center or via the [Authorizations API](https://developers.phrase.com/api/#tag--Authorizations).
+
+Simply pass the access token as the username of your request:
+```
+$ curl -u ACCESS_TOKEN: "https://api.phrase.com/v2/projects"
+```
+or send the access token via the `Authorization` header field:
+```
+$ curl -H "Authorization: token ACCESS_TOKEN" https://api.phrase.com/v2/projects
+```
+
+### Send via parameter
+As JSONP (and other) requests cannot send HTTP Basic Auth credentials, a special query parameter `access_token` can be used:
+```
+curl "https://api.phrase.com/v2/projects?access_token=ACCESS_TOKEN"
+```
+You should only use this transport method if sending the authentication via header or Basic authentication is not possible.
+
+## Two-Factor-Authentication
+Users with Two-Factor-Authentication enabled have to send a valid token along their request with certain authentication methods (such as Basic authentication). The necessity of a Two-Factor-Authentication token is indicated by the `X-PhraseApp-OTP: required; :MFA-type` header in the response. The `:MFA-typefield` indicates the source of the token, e.g. `app` (refers to your Authenticator application):
+```
+X-PhraseApp-OTP: required; app
+```
+To provide a Two-Factor-Authentication token you can simply send it in the header of the request:
+```
+curl -H "X-PhraseApp-OTP: MFA-TOKEN" -u EMAIL https://api.phrase.com/v2/projects
+```
+Since Two-Factor-Authentication tokens usually expire quickly, we recommend using an alternative authentication method such as OAuth access tokens.
+
+## Multiple Accounts
+Some endpoints require the account ID to be specified if the authenticated user is a member of multiple accounts. You can find the eight-digit account ID inside [Translation Center](https://app.phrase.com/) by switching to the desired account and then visiting the account details page. If required, you can specify the account just like a normal parameter within the request.
+
+
