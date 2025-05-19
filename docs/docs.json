@@ -92,7 +92,7 @@
   },
   "logo": {
     "light": "/assets/images/phrase-logo-light.svg",
-    "dark": "/assets/images/phrase-logo-light.svg"
+    "dark": "/assets/images/phrase-logo-dark.svg"
   },
   "navbar": {
     "links": [

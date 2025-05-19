@@ -1,32 +1,36 @@
-# Mintlify Starter Kit
+# Phrase Developer Portal
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
+## Publishing Changes
 
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+Changes are automatically deployed to production after pushing to the default branch.
 
-### Development
+You can access the Mintlify dashboard [here](https://dashboard.mintlify.com/phrase/phrase).
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+## Development
+
+### Prerequisites
+
+Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview documentation changes locally. To install it, run the following command:
 
 ```
 npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation (where docs.json is)
+### Starting the Development Server
+
+To start the development server, run the following NPM command from the root of your documentation project:
 
 ```
-mintlify dev
+npm run dev
 ```
 
-### Publishing Changes
+**Note:** Search functionality is not available in development mode.
 
-Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+### Sorting OpenAPI Specification Paths
 
-#### Troubleshooting
+Mintlify displays paths directly from the OpenAPI specification in the order they appear in the source file.
+To sort them alphabetically, use a custom Node.js script. Example usage:
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `docs.json`
+```
+node scripts/spec-sort.js -i source.json -o output.json
+```
