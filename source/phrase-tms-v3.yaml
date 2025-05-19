@@ -1,0 +1,5317 @@
+---
+swagger: "2.0"
+info:
+  description: "Welcome to Phrase's TMS API documentation. \n\n Please visit our [help\
+    \ center](https://support.phrase.com/hc/en-us/sections/5709662083612) for more\
+    \ information about the APIs. \n\n If you have any questions, please contact [Support](https://support.phrase.com/hc/requests/new).\
+    \ \n\n Please, include the `User-Agent` header with the name of your application\
+    \ or project. It might be a good idea to include some sort of contact information\
+    \ as well, so that we can get in touch if necessary. Examples of excellent `User-Agent`\
+    \ headers:\n > User-Agent: Example mobile app (example@phrase.com) <br/> User-Agent:\
+    \ ACME Inc Java 1.8 Client (http://acmeinc.com/contact)"
+  version: "3"
+  title: "Phrase TMS API"
+host: "cloud.memsource.com"
+basePath: "/web"
+tags:
+- name: "Analysis"
+- name: "Authentication"
+- name: "Conversations"
+- name: "Job"
+- name: "Project"
+- name: "Project Template"
+- name: "Quality Assurance"
+- name: "Translation"
+- name: "Translation Memory"
+- name: "User"
+schemes:
+- "https"
+paths:
+  /api2/v3/analyses/{analyseUid}:
+    get:
+      tags:
+      - "Analysis"
+      summary: "Get analysis"
+      description: "\nThis API endpoint retrieves analysis results, encompassing basic\
+        \ information about the analysis, such as its name,\nassigned provider,\n\
+        [net rate scheme](https://support.phrase.com/hc/en-us/articles/5709665578908-Net-Rate-Schemes-TMS-),\n\
+        [Analysis settings](https://support.phrase.com/hc/en-us/articles/5709712007708-Analysis-TMS-)\
+        \ settings and a subset of\n[Get project](#operation/getProject) information\
+        \ for the project the analysis belongs to.\n\nThe analysis results consist\
+        \ of each analyzed language, presented as an item within the `analyseLanguageParts`\
+        \ array.\nEach of these items contains details regarding the analyzed\n[jobs](https://support.phrase.com/hc/en-us/articles/5709686763420-Jobs-TMS-),\n\
+        [translation memories](https://support.phrase.com/hc/en-us/articles/5709688865692-Translation-Memories-Overview)\n\
+        and the resultant data.\n\nThe analysis results are divided into two sections:\n\
+        \n- `data` stores the raw numbers,\n- `discountedData` recalculates the raw\
+        \ numbers using the selected net rate scheme.\n\nSimilar to the UI, both raw\
+        \ and net numbers are categorized based on their source into TM, MT, and NT\
+        \ categories,\nincluding repetitions where applicable. These categories are\
+        \ then further subdivided based on the match score.\n"
+      operationId: "getAnalyseV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "analyseUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/AnalyseV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/auth/login:
+    post:
+      tags:
+      - "Authentication"
+      summary: "Login"
+      description: ""
+      operationId: "loginV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/LoginV3Dto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/LoginResponseV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/auth/loginOther:
+    post:
+      tags:
+      - "Authentication"
+      summary: "Login as another user"
+      description: "Available only for admin"
+      operationId: "loginOtherV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/LoginOtherV3Dto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/LoginResponseV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/auth/loginToSession:
+    post:
+      tags:
+      - "Authentication"
+      summary: "Login to session"
+      description: ""
+      operationId: "loginToSession"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/LoginToSessionV3Dto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/LoginToSessionResponseV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/jobs:
+    patch:
+      tags:
+      - "Job"
+      summary: "Edit jobs (with possible partial updates)"
+      description: "Allows partial update, not breaking whole batch if single job\
+        \ fails and returns list of errors"
+      operationId: "patchUpdateJobParts"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/JobPartPatchBatchDto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/JobPartPatchResultDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/jobs/{jobUid}/conversations/plains:
+    post:
+      tags:
+      - "Conversations"
+      summary: "Create plain conversation"
+      description: ""
+      operationId: "createSegmentTargetConversationV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/CreatePlainConversationDto"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/PlainConversationDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/jobs/{jobUid}/conversations/plains/{conversationId}/comments:
+    post:
+      tags:
+      - "Conversations"
+      summary: "Add plain comment"
+      description: ""
+      operationId: "addPlainCommentV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "conversationId"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/AddCommentDto"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/AddPlainCommentResultDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/jobs/{jobUid}/conversations/plains/{conversationId}/comments/{commentId}:
+    put:
+      tags:
+      - "Conversations"
+      summary: "Edit plain comment"
+      description: ""
+      operationId: "updatePlainCommentV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "conversationId"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "commentId"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/AddCommentDto"
+      responses:
+        "202":
+          description: "Updated"
+          schema:
+            $ref: "#/definitions/PlainConversationDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projectTemplates/{projectTemplateUid}/preTranslateSettings:
+    get:
+      tags:
+      - "Project Template"
+      summary: "Get Pre-translate settings"
+      description: ""
+      operationId: "getPreTranslateSettingsForProjectTemplate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectTemplateUid"
+        in: "path"
+        required: true
+        type: "string"
+      deprecated: true
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+    put:
+      tags:
+      - "Project Template"
+      summary: "Update Pre-translate settings"
+      description: ""
+      operationId: "updatePreTranslateSettingsForProjectTemplate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectTemplateUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/PreTranslateSettingsV3Dto"
+      deprecated: true
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projectTemplates/{projectTemplateUid}/transMemories:
+    get:
+      tags:
+      - "Project Template"
+      - "Translation Memory"
+      summary: "Get translation memories"
+      description: ""
+      operationId: "getProjectTemplateTransMemories"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "targetLang"
+        in: "query"
+        description: "Filter project translation memories by target language"
+        required: false
+        type: "string"
+      - name: "wfStepUid"
+        in: "query"
+        description: "Filter project translation memories by workflow step"
+        required: false
+        type: "string"
+      - name: "projectTemplateUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ProjectTemplateTransMemoryListDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects:
+    post:
+      tags:
+      - "Project"
+      summary: "Create project"
+      description: ""
+      operationId: "createProjectV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/CreateProjectV3Dto"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/AbstractProjectDtoV2"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}:
+    put:
+      tags:
+      - "Project"
+      summary: "Edit project"
+      description: ""
+      operationId: "editProjectV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/EditProjectV3Dto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/AbstractProjectDtoV2"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/analyses:
+    get:
+      tags:
+      - "Project"
+      - "Analysis"
+      summary: "List analyses by project"
+      description: ""
+      operationId: "listByProjectV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "name"
+        in: "query"
+        description: "Name to search by"
+        required: false
+        type: "string"
+      - name: "uid"
+        in: "query"
+        description: "Uid to search by"
+        required: false
+        type: "string"
+      - name: "pageNumber"
+        in: "query"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        format: "int32"
+      - name: "pageSize"
+        in: "query"
+        description: "Page size, accepts values between 1 and 50, default 50"
+        required: false
+        type: "integer"
+        default: 50
+        maximum: 50
+        minimum: 1
+        format: "int32"
+      - name: "sort"
+        in: "query"
+        description: "Sorting field"
+        required: false
+        type: "string"
+        default: "DATE_CREATED"
+        enum:
+        - "DATE_CREATED"
+        - "INNER_ID"
+      - name: "order"
+        in: "query"
+        description: "Sorting order"
+        required: false
+        type: "string"
+        default: "desc"
+        enum:
+        - "asc"
+        - "desc"
+      - name: "onlyOwnerOrg"
+        in: "query"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PageDtoAnalyseReference"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/export:
+    post:
+      tags:
+      - "Job"
+      summary: "Export jobs to online repository"
+      description: ""
+      operationId: "exportToOnlineRepository"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/JobExportActionDto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/JobExportResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/preTranslate:
+    post:
+      tags:
+      - "Translation"
+      summary: "Pre-translate job"
+      description: ""
+      operationId: "preTranslateV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/PreTranslateJobsV3Dto"
+      responses:
+        "202":
+          description: "Accepted"
+          schema:
+            $ref: "#/definitions/AsyncRequestWrapperV2Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/qualityAssurances/run:
+    post:
+      tags:
+      - "Quality Assurance"
+      summary: "Run quality assurance (batch)"
+      description: "Call \"Get QA settings\" endpoint to get the list of enabled QA\
+        \ checks"
+      operationId: "runQaForJobPartsV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/QualityAssuranceBatchRunDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/qualityAssurances/segments/run:
+    post:
+      tags:
+      - "Quality Assurance"
+      summary: "Run quality assurance on selected segments"
+      description: "By default runs only fast running checks. Source and target language\
+        \ of jobs have to match."
+      operationId: "runQaForSegmentsV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/QualityAssuranceSegmentsRunDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/{jobUid}/analyses:
+    get:
+      tags:
+      - "Analysis"
+      - "Job"
+      summary: "List analyses"
+      description: ""
+      operationId: "listPartAnalyseV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "pageNumber"
+        in: "query"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        format: "int32"
+      - name: "pageSize"
+        in: "query"
+        required: false
+        type: "integer"
+        default: 50
+        maximum: 50
+        minimum: 1
+        format: "int32"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PageDtoAnalyseReference"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/{jobUid}/qualityAssurances/run:
+    post:
+      tags:
+      - "Quality Assurance"
+      summary: "Run quality assurance"
+      description: "Call \"Get QA settings\" endpoint to get the list of enabled QA\
+        \ checks"
+      operationId: "runQaForJobPartV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/QualityAssuranceRunDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/{jobUid}/targetFile:
+    put:
+      tags:
+      - "Job"
+      summary: "Download target file (async)"
+      description: "\nThis call initiates an asynchronous request to generate and\
+        \ download the target file containing translations.\nThis request covers jobs\
+        \ created via actions like 'split jobs', ensuring accessibility even for such\
+        \ cases.\n\nTo monitor the status of this asynchronous request, you have three\
+        \ options:\n1. Use [Get asynchronous request](#operation/getAsyncRequest).\n\
+        2. Search for the asyncRequestId by utilizing [List pending requests](#operation/listPendingRequests).\n\
+        3. Use callbackUrl to get notification that operation was finished\n\nIn contrast\
+        \ to the previous version (v1) of this call, v2 does not directly provide\
+        \ the target file within the response.\nOnce the asynchronous request is completed,\
+        \ you can download the target file using\n[Download target file based on async\
+        \ request](#operation/downloadCompletedFile).\n\n_Note_: The asyncRequestId\
+        \ can be used only once. Once the download is initiated through `Download\
+        \ target file based on\nasync request`, the asyncRequestId becomes invalid\
+        \ for further use.\n"
+      operationId: "completedFileV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/DownloadTargetFileDto"
+      responses:
+        "202":
+          description: "Accepted"
+          schema:
+            $ref: "#/definitions/AsyncRequestWrapperV2Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/{jobUid}/transMemories/search:
+    post:
+      tags:
+      - "Job"
+      - "Translation Memory"
+      summary: "Search job's translation memories"
+      description: ""
+      operationId: "searchByJob3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/SearchTMByJobRequestDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SearchResponseListTmDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/jobs/{jobUid}/transMemories/wildCardSearch:
+    post:
+      tags:
+      - "Job"
+      - "Translation Memory"
+      summary: "Wildcard search job's translation memories"
+      description: ""
+      operationId: "wildCardSearchByJob3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/WildCardSearchByJobRequestDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SearchResponseListTmDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/preTranslateSettings:
+    get:
+      tags:
+      - "Project"
+      summary: "Get Pre-translate settings"
+      description: ""
+      operationId: "getPreTranslateSettingsForProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      deprecated: true
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+    put:
+      tags:
+      - "Project"
+      summary: "Update Pre-translate settings"
+      description: ""
+      operationId: "editProjectPreTranslateSettings"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/PreTranslateSettingsV3Dto"
+      deprecated: true
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV3Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/projects/{projectUid}/transMemories:
+    get:
+      tags:
+      - "Project"
+      summary: "Get translation memories"
+      description: ""
+      operationId: "getProjectTransMemoriesV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "targetLang"
+        in: "query"
+        description: "Filter project translation memories by target language"
+        required: false
+        type: "string"
+      - name: "wfStepUid"
+        in: "query"
+        description: "Filter project translation memories by workflow step"
+        required: false
+        type: "string"
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ProjectTransMemoryListDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+    put:
+      tags:
+      - "Project"
+      summary: "Edit translation memories"
+      description: "If user wants to edit “All target languages” or \"All workflow\
+        \ steps”, \n                       but there are already varied TM settings\
+        \ for individual languages or steps, \n                       then the user\
+        \ risks to overwrite these individual choices."
+      operationId: "setProjectTransMemoriesV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/SetProjectTransMemoriesV3Dto"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ProjectTransMemoryListDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/users:
+    post:
+      tags:
+      - "User"
+      summary: "Create user"
+      description: ""
+      operationId: "createUserV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/AbstractUserCreateDto"
+      - name: "sendInvitation"
+        in: "query"
+        required: false
+        type: "boolean"
+        default: false
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/UserDetailsDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/users/{userUid}:
+    get:
+      tags:
+      - "User"
+      summary: "Get user"
+      description: ""
+      operationId: "getUserV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/UserDetailsDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+    put:
+      tags:
+      - "User"
+      summary: "Edit user"
+      description: ""
+      operationId: "updateUserV3"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/AbstractUserEditDto"
+      - name: "userUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/UserDetailsDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v3/users/{userUid}/disableTwoFactorAuth:
+    post:
+      tags:
+      - "User"
+      summary: "Disable two-factor authentication"
+      description: ""
+      operationId: "disableTwoFactorAuthV3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/UserDetailsDtoV3"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+securityDefinitions:
+  ApiToken:
+    description: "Get a token from `auth/login` [endpoint](#operation/login) and then\
+      \ pass it in the `Authorization` HTTP header in every subsequent API call. For\
+      \ more information visit our [help center](https://support.phrase.com/hc/en-us/articles/5709662181404-API-Authentication-TMS-#token-0-0)."
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+  OAuth2:
+    description: "A standard OAuth 2.0 authorization code flow. For more information\
+      \ visit our [help center](https://support.phrase.com/hc/en-us/articles/5709662181404-API-Authentication-TMS-#oauth-2-0-0-1)."
+    type: "oauth2"
+    authorizationUrl: "https://cloud.memsource.com/web/oauth/authorize"
+    tokenUrl: "https://cloud.memsource.com/web/oauth/token"
+    flow: "accessCode"
+definitions:
+  ADMIN:
+    allOf:
+    - $ref: "#/definitions/AbstractUserCreateDto"
+    - type: "object"
+      properties: {}
+  ADMIN_EDIT:
+    allOf:
+    - $ref: "#/definitions/AbstractUserEditDto"
+    - type: "object"
+      properties: {}
+  ADMIN_RESPONSE:
+    allOf:
+    - $ref: "#/definitions/UserDetailsDtoV3"
+    - type: "object"
+      properties: {}
+  AbsoluteTranslationLengthWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        limit:
+          type: "string"
+  AbstractAnalyseSettingsDto:
+    type: "object"
+    discriminator: "type"
+    properties:
+      type:
+        type: "string"
+        description: "Response differs based on analyse type"
+        enum:
+        - "PreAnalyse"
+        - "PostAnalyse"
+        - "PreAnalyseTarget"
+        - "Compare"
+      includeConfirmedSegments:
+        type: "boolean"
+        description: "Default: false"
+      includeNotConfirmedSegments:
+        type: "boolean"
+        description: "Default: false"
+      includeNumbers:
+        type: "boolean"
+        description: "Default: false"
+      includeLockedSegments:
+        type: "boolean"
+        description: "Default: false"
+      countSourceUnits:
+        type: "boolean"
+        description: "Default: false"
+      includeTransMemory:
+        type: "boolean"
+        description: "Default: false"
+      namingPattern:
+        type: "string"
+      analyzeByLanguage:
+        type: "boolean"
+        description: "Default: false"
+      analyzeByProvider:
+        type: "boolean"
+        description: "Default: false"
+      allowAutomaticPostAnalysis:
+        type: "boolean"
+        description: "If automatic post analysis should be created after update source.\
+          \ Default: false"
+    description: "Base analyseSettingsDto"
+  AbstractProjectDtoV2:
+    type: "object"
+    discriminator: "userRole"
+    properties:
+      uid:
+        type: "string"
+      internalId:
+        type: "integer"
+        format: "int32"
+      id:
+        type: "string"
+      name:
+        type: "string"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      domain:
+        $ref: "#/definitions/DomainReference"
+      subDomain:
+        $ref: "#/definitions/SubDomainReference"
+      owner:
+        $ref: "#/definitions/UserReference"
+      sourceLang:
+        type: "string"
+      targetLangs:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "string"
+      references:
+        type: "array"
+        items:
+          $ref: "#/definitions/ReferenceFileReference"
+      mtSettingsPerLanguageList:
+        type: "array"
+        items:
+          $ref: "#/definitions/MTSettingsPerLanguageReference"
+      status:
+        type: "string"
+        enum:
+        - "NEW"
+        - "ASSIGNED"
+        - "COMPLETED"
+        - "ACCEPTED_BY_VENDOR"
+        - "DECLINED_BY_VENDOR"
+        - "COMPLETED_BY_VENDOR"
+        - "CANCELLED"
+      userRole:
+        type: "string"
+        description: "Response differs based on user's role"
+        readOnly: true
+    description: "Base projectDto"
+  AbstractUserCreateDto:
+    type: "object"
+    required:
+    - "email"
+    - "firstName"
+    - "lastName"
+    - "role"
+    - "timezone"
+    - "userName"
+    discriminator: "role"
+    properties:
+      userName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      firstName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      lastName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      email:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      password:
+        type: "string"
+        description: "Will be ignored if sendInvitation parameter is set to true"
+        minLength: 0
+        maxLength: 255
+      role:
+        type: "string"
+        description: "Enum: \"ADMIN\", \"PROJECT_MANAGER\", \"LINGUIST\", \"GUEST\"\
+          , \"SUBMITTER\", \"PORTAL_MEMBER\""
+        enum:
+        - "SYS_ADMIN"
+        - "SYS_ADMIN_READ"
+        - "ADMIN"
+        - "PROJECT_MANAGER"
+        - "LINGUIST"
+        - "GUEST"
+        - "SUBMITTER"
+        - "PORTAL_MEMBER"
+      timezone:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      receiveNewsletter:
+        type: "boolean"
+        description: "Default: true"
+      note:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+      active:
+        type: "boolean"
+        description: "Default: true"
+  AbstractUserEditDto:
+    type: "object"
+    required:
+    - "email"
+    - "firstName"
+    - "lastName"
+    - "role"
+    - "timezone"
+    - "userName"
+    discriminator: "role"
+    properties:
+      userName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      firstName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      lastName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      email:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      role:
+        type: "string"
+        description: "Enum: \"ADMIN\", \"PROJECT_MANAGER\", \"LINGUIST\", \"GUEST\"\
+          , \"SUBMITTER\", \"PORTAL_MEMBER\""
+        enum:
+        - "SYS_ADMIN"
+        - "SYS_ADMIN_READ"
+        - "ADMIN"
+        - "PROJECT_MANAGER"
+        - "LINGUIST"
+        - "GUEST"
+        - "SUBMITTER"
+        - "PORTAL_MEMBER"
+      timezone:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      receiveNewsletter:
+        type: "boolean"
+        description: "Default: true"
+      note:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+      active:
+        type: "boolean"
+        description: "Default: true"
+  AddCommentDto:
+    type: "object"
+    required:
+    - "text"
+    properties:
+      text:
+        type: "string"
+  AddPlainCommentResultDto:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "ID of created comment"
+      conversation:
+        description: "Conversation"
+        $ref: "#/definitions/PlainConversationDto"
+  Admin, Project Manager (v2):
+    allOf:
+    - $ref: "#/definitions/AbstractProjectDtoV2"
+    - type: "object"
+      properties:
+        shared:
+          type: "boolean"
+          description: "Default: false"
+        progress:
+          $ref: "#/definitions/ProgressDtoV2"
+        client:
+          $ref: "#/definitions/ClientReference"
+        costCenter:
+          $ref: "#/definitions/CostCenterReference"
+        businessUnit:
+          $ref: "#/definitions/BusinessUnitReference"
+        dateDue:
+          type: "string"
+          format: "date-time"
+        purchaseOrder:
+          type: "string"
+        isPublishedOnJobBoard:
+          type: "boolean"
+          description: "Default: false"
+        note:
+          type: "string"
+        createdBy:
+          $ref: "#/definitions/UserReference"
+        qualityAssuranceSettings:
+          $ref: "#/definitions/ObjectReference"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/ProjectWorkflowStepDtoV2"
+        analyseSettings:
+          $ref: "#/definitions/ObjectReference"
+        accessSettings:
+          $ref: "#/definitions/ObjectReference"
+        financialSettings:
+          $ref: "#/definitions/ObjectReference"
+        projectWorkflowSettings:
+          $ref: "#/definitions/ProjectWorkflowSettingsReference"
+  AnalyseJobReference:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      filename:
+        type: "string"
+      innerId:
+        type: "string"
+  AnalyseLanguagePartReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      sourceLang:
+        type: "string"
+      targetLang:
+        type: "string"
+      jobs:
+        type: "array"
+        description: "Max of 100 jobs returned, use \"List jobs of analyses\" to get\
+          \ all"
+        items:
+          $ref: "#/definitions/AnalyseJobReference"
+  AnalyseLanguagePartV3Dto:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      sourceLang:
+        type: "string"
+      targetLang:
+        type: "string"
+      data:
+        $ref: "#/definitions/DataDto_2"
+      discountedData:
+        $ref: "#/definitions/DataDto_2"
+      jobs:
+        type: "array"
+        description: "Max of 100 jobs returned, use \"List jobs of analyses\" to get\
+          \ all"
+        items:
+          $ref: "#/definitions/AnalyseJobReference"
+      transMemories:
+        type: "array"
+        items:
+          $ref: "#/definitions/TransMemoryReferenceDtoV2"
+  AnalyseReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      innerId:
+        type: "string"
+      type:
+        type: "string"
+        enum:
+        - "PreAnalyse"
+        - "PostAnalyse"
+        - "PreAnalyseTarget"
+        - "Compare"
+        - "PreAnalyseProvider"
+        - "ContinuousPostAnalyse"
+        - "ContinuousPreAnalyse"
+      name:
+        type: "string"
+      provider:
+        $ref: "#/definitions/ProviderReference"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      netRateScheme:
+        $ref: "#/definitions/NetRateSchemeReference"
+      analyseLanguageParts:
+        type: "array"
+        items:
+          $ref: "#/definitions/AnalyseLanguagePartReference"
+      outdated:
+        type: "boolean"
+      importStatus:
+        $ref: "#/definitions/ImportStatusDto"
+      pureWarnings:
+        type: "array"
+        items:
+          type: "string"
+  AnalyseV3Dto:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      innerId:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+        enum:
+        - "PreAnalyse"
+        - "PostAnalyse"
+        - "PreAnalyseTarget"
+        - "Compare"
+        - "PreAnalyseProvider"
+        - "ContinuousPostAnalyse"
+        - "ContinuousPreAnalyse"
+      name:
+        type: "string"
+      provider:
+        $ref: "#/definitions/ProviderReference"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      netRateScheme:
+        $ref: "#/definitions/NetRateSchemeReference"
+      canChangeNetRateScheme:
+        type: "boolean"
+      analyseLanguageParts:
+        type: "array"
+        items:
+          $ref: "#/definitions/AnalyseLanguagePartV3Dto"
+      settings:
+        $ref: "#/definitions/AbstractAnalyseSettingsDto"
+      outdated:
+        type: "boolean"
+      importStatus:
+        $ref: "#/definitions/ImportStatusDto"
+      pureWarnings:
+        type: "array"
+        items:
+          type: "string"
+      project:
+        $ref: "#/definitions/ProjectReference"
+  AsyncRequestReferenceDto:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+        description: "UID of the object"
+      type:
+        type: "string"
+        description: "Type of the object"
+        enum:
+        - "JOB"
+    description: "Reference object that is being processed by async request"
+  AsyncRequestV2Dto:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      action:
+        type: "string"
+        enum:
+        - "PRE_ANALYSE"
+        - "POST_ANALYSE"
+        - "CONTINUOUS_PRE_ANALYSE"
+        - "CONTINUOUS_POST_ANALYSE"
+        - "COMPARE_ANALYSE"
+        - "PARENT_ANALYSE"
+        - "PRE_TRANSLATE"
+        - "ASYNC_TRANSLATE"
+        - "IMPORT_JOB"
+        - "IMPORT_FILE"
+        - "ALIGN"
+        - "EXPORT_TMX_BY_QUERY"
+        - "EXPORT_TMX"
+        - "IMPORT_TMX"
+        - "IMPORT_MXLF_INTO_TM"
+        - "IMPORT_TBX"
+        - "INSERT_INTO_TM"
+        - "DELETE_TM"
+        - "CLEAR_TM"
+        - "QA"
+        - "QA_V3"
+        - "UPDATE_CONTINUOUS_JOB"
+        - "UPDATE_SOURCE"
+        - "UPDATE_TARGET"
+        - "EXTRACT_CLEANED_TMS"
+        - "GLOSSARY_PUT"
+        - "GLOSSARY_DELETE"
+        - "CREATE_PROJECT"
+        - "EXPORT_COMPLETE_FILE"
+        - "IMPORT_ANNOTATIONS"
+        - "FILE_FLOW_CONVERTER_IMPORT"
+        - "FILE_FLOW_MT_PRETRANSLATE"
+        - "FILE_FLOW_QUALITY_ESTIMATION"
+        - "AUTO_LQA"
+      asyncResponse:
+        $ref: "#/definitions/AsyncResponseV2Dto"
+      parent:
+        $ref: "#/definitions/AsyncRequestV2Dto"
+      project:
+        $ref: "#/definitions/ProjectReference"
+  AsyncRequestWrapperV2Dto:
+    type: "object"
+    properties:
+      asyncRequest:
+        $ref: "#/definitions/AsyncRequestV2Dto"
+      reference:
+        description: "Different depending on context of the action"
+        $ref: "#/definitions/AsyncRequestReferenceDto"
+  AsyncResponseV2Dto:
+    type: "object"
+    properties:
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      errorCode:
+        type: "string"
+      errorDesc:
+        type: "string"
+      errorDetails:
+        type: "array"
+        items:
+          $ref: "#/definitions/ErrorDetailDtoV2"
+      warnings:
+        type: "array"
+        items:
+          $ref: "#/definitions/ErrorDetailDtoV2"
+  BusinessUnitReference:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  BusinessUnitReference_3:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  ClientReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+  ClientReference_4:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+  CommentDto:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      text:
+        type: "string"
+      createdBy:
+        $ref: "#/definitions/MentionableUserDto"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      dateModified:
+        type: "string"
+        format: "date-time"
+      mentions:
+        type: "array"
+        items:
+          $ref: "#/definitions/MentionDto"
+  CostCenterReference:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  CountsDto_3:
+    type: "object"
+    properties:
+      segments:
+        type: "number"
+        format: "double"
+      words:
+        type: "number"
+        format: "double"
+      characters:
+        type: "number"
+        format: "double"
+      normalizedPages:
+        type: "number"
+        format: "double"
+      percent:
+        type: "number"
+        format: "double"
+      editingTime:
+        type: "number"
+        format: "double"
+  CreateCustomFieldInstanceDto:
+    type: "object"
+    required:
+    - "customField"
+    properties:
+      customField:
+        $ref: "#/definitions/UidReference"
+      selectedOptions:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+      value:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+  CreatePlainConversationDto:
+    type: "object"
+    required:
+    - "references"
+    properties:
+      comment:
+        $ref: "#/definitions/AddCommentDto"
+      references:
+        $ref: "#/definitions/PlainReferences"
+  CreateProjectV3Dto:
+    type: "object"
+    required:
+    - "name"
+    - "sourceLang"
+    - "targetLangs"
+    properties:
+      name:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      sourceLang:
+        type: "string"
+      targetLangs:
+        type: "array"
+        items:
+          type: "string"
+      client:
+        description: "Client referenced by id"
+        $ref: "#/definitions/IdReference"
+      businessUnit:
+        $ref: "#/definitions/IdReference"
+      domain:
+        $ref: "#/definitions/IdReference"
+      subDomain:
+        $ref: "#/definitions/IdReference"
+      costCenter:
+        $ref: "#/definitions/IdReference"
+      purchaseOrder:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      workflowSteps:
+        type: "array"
+        items:
+          $ref: "#/definitions/IdReference"
+      dateDue:
+        type: "string"
+        format: "date-time"
+      note:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+      lqaProfiles:
+        type: "array"
+        description: "Lqa profiles that will be added to workflow steps"
+        items:
+          $ref: "#/definitions/LqaProfilesForWsV2Dto"
+      customFields:
+        type: "array"
+        description: "Custom fields for project"
+        items:
+          $ref: "#/definitions/CustomFieldInstanceApiDto"
+      fileHandover:
+        type: "boolean"
+        description: "Default: false"
+      propagateTranslationsToLowerWfDuringUpdateSource:
+        type: "boolean"
+        description: "Default: false"
+  CustomFieldInstanceApiDto:
+    type: "object"
+    properties:
+      customField:
+        $ref: "#/definitions/UidReference"
+      selectedOptions:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+      value:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+  CustomFieldInstanceApiV3Dto:
+    type: "object"
+    properties:
+      customField:
+        $ref: "#/definitions/UidReference"
+      selectedOptions:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+      value:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+  CustomQAWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        message:
+          type: "string"
+        subType:
+          type: "string"
+        srcPosition:
+          $ref: "#/definitions/Position"
+        tgtPosition:
+          $ref: "#/definitions/Position"
+  DataDto_2:
+    type: "object"
+    properties:
+      available:
+        type: "boolean"
+      estimate:
+        type: "boolean"
+      all:
+        $ref: "#/definitions/CountsDto_3"
+      repetitions:
+        $ref: "#/definitions/CountsDto_3"
+      transMemoryMatches:
+        $ref: "#/definitions/MatchCounts101Dto_3"
+      machineTranslationMatches:
+        $ref: "#/definitions/MatchCountsDto_3"
+      nonTranslatablesMatches:
+        $ref: "#/definitions/MatchCountsNTDto_2"
+      internalFuzzyMatches:
+        $ref: "#/definitions/MatchCountsDto_3"
+  DiscountSchemeReference_3:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      createdBy:
+        $ref: "#/definitions/UserReference_2"
+  DomainReference:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  DomainReference_4:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  DownloadTargetFileDto:
+    type: "object"
+    properties:
+      callbackUrl:
+        type: "string"
+  EditProjectV3Dto:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      status:
+        type: "string"
+        enum:
+        - "NEW"
+        - "ASSIGNED"
+        - "COMPLETED"
+        - "ACCEPTED_BY_VENDOR"
+        - "DECLINED_BY_VENDOR"
+        - "COMPLETED_BY_VENDOR"
+        - "CANCELLED"
+      client:
+        $ref: "#/definitions/IdReference"
+      businessUnit:
+        $ref: "#/definitions/IdReference"
+      domain:
+        $ref: "#/definitions/IdReference"
+      costCenter:
+        $ref: "#/definitions/IdReference"
+      subDomain:
+        $ref: "#/definitions/IdReference"
+      owner:
+        description: "Owner must be Admin or PM"
+        $ref: "#/definitions/IdReference"
+      purchaseOrder:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      dateDue:
+        type: "string"
+        format: "date-time"
+      note:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+      fileHandover:
+        type: "boolean"
+        description: "Default: false"
+      propagateTranslationsToLowerWfDuringUpdateSource:
+        type: "boolean"
+        description: "Default: false"
+      lqaProfiles:
+        type: "array"
+        description: "Lqa profiles that will be added to workflow steps"
+        items:
+          $ref: "#/definitions/LqaProfilesForWsV3Dto"
+      archived:
+        type: "boolean"
+        description: "Default: false"
+      customFields:
+        type: "array"
+        description: "Custom fields for project"
+        items:
+          $ref: "#/definitions/CustomFieldInstanceApiV3Dto"
+  EmptyPairTagsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  EmptyTagContentWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  EmptyTranslationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  ErrorDetailDtoV2:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        description: "Code, e.g. NOT_FOUND."
+      args:
+        type: "object"
+        description: "Related arguments, e.g. number => \"hello world\""
+        additionalProperties:
+          type: "object"
+      message:
+        type: "string"
+        description: "Optional human-readable message."
+  ErrorDetailDtoV3:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        description: "Code, e.g. NOT_FOUND."
+      args:
+        type: "object"
+        description: "Related arguments, e.g. number => \"hello world\""
+        additionalProperties:
+          type: "object"
+      message:
+        type: "string"
+        description: "Optional human-readable message."
+  ExtraNumbersV3WarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        number:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  ExtraNumbersWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        extraNumbers:
+          type: "array"
+          items:
+            type: "string"
+  ForbiddenStringWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        forbiddenString:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  ForbiddenTermWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        term:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+        sourceTerms:
+          type: "array"
+          items:
+            $ref: "#/definitions/Term"
+  FormattingWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  FuzzyInconsistencyWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        segmentIds:
+          type: "array"
+          items:
+            type: "string"
+  GUEST:
+    allOf:
+    - $ref: "#/definitions/AbstractUserCreateDto"
+    - type: "object"
+      required:
+      - "client"
+      properties:
+        client:
+          $ref: "#/definitions/UidReference"
+        enableMT:
+          type: "boolean"
+          description: "Enable MT. Default: true"
+        projectViewOther:
+          type: "boolean"
+          description: "View projects created by other users. Default: true"
+        projectViewOtherLinguist:
+          type: "boolean"
+          description: "Show provider names. Default: true"
+        projectViewOtherEditor:
+          type: "boolean"
+          description: "Edit jobs in Phrase CAT editor. Default: true"
+        transMemoryViewOther:
+          type: "boolean"
+          description: "View TMs created by other users. Default: true"
+        transMemoryEditOther:
+          type: "boolean"
+          description: "Modify TMs created by other users. Default: true"
+        transMemoryExportOther:
+          type: "boolean"
+          description: "Export TMs created by other users. Default: true"
+        transMemoryImportOther:
+          type: "boolean"
+          description: "Import into TMs created by other users. Default: true"
+        termBaseViewOther:
+          type: "boolean"
+          description: "View TBs created by other users. Default: true"
+        termBaseEditOther:
+          type: "boolean"
+          description: "Modify TBs created by other users. Default: true"
+        termBaseExportOther:
+          type: "boolean"
+          description: "Export TBs created by other users. Default: true"
+        termBaseImportOther:
+          type: "boolean"
+          description: "Import into TBs created by other users. Default: true"
+        termBaseApproveOther:
+          type: "boolean"
+          description: "Approve terms in TBs created by other users. Default: true"
+  GUEST_EDIT:
+    allOf:
+    - $ref: "#/definitions/AbstractUserEditDto"
+    - type: "object"
+      required:
+      - "client"
+      properties:
+        client:
+          $ref: "#/definitions/UidReference"
+        enableMT:
+          type: "boolean"
+          description: "Enable MT. Default: true"
+        projectViewOther:
+          type: "boolean"
+          description: "View projects created by other users. Default: true"
+        projectViewOtherLinguist:
+          type: "boolean"
+          description: "Show provider names. Default: true"
+        projectViewOtherEditor:
+          type: "boolean"
+          description: "Edit jobs in Phrase CAT editor. Default: true"
+        transMemoryViewOther:
+          type: "boolean"
+          description: "View TMs created by other users. Default: true"
+        transMemoryEditOther:
+          type: "boolean"
+          description: "Modify TMs created by other users. Default: true"
+        transMemoryExportOther:
+          type: "boolean"
+          description: "Export TMs created by other users. Default: true"
+        transMemoryImportOther:
+          type: "boolean"
+          description: "Import into TMs created by other users. Default: true"
+        termBaseViewOther:
+          type: "boolean"
+          description: "View TBs created by other users. Default: true"
+        termBaseEditOther:
+          type: "boolean"
+          description: "Modify TBs created by other users. Default: true"
+        termBaseExportOther:
+          type: "boolean"
+          description: "Export TBs created by other users. Default: true"
+        termBaseImportOther:
+          type: "boolean"
+          description: "Import into TBs created by other users. Default: true"
+        termBaseApproveOther:
+          type: "boolean"
+          description: "Approve terms in TBs created by other users. Default: true"
+  GUEST_RESPONSE:
+    allOf:
+    - $ref: "#/definitions/UserDetailsDtoV3"
+    - type: "object"
+      required:
+      - "client"
+      properties:
+        client:
+          $ref: "#/definitions/ClientReference_4"
+        enableMT:
+          type: "boolean"
+        projectViewOther:
+          type: "boolean"
+        projectViewOtherLinguist:
+          type: "boolean"
+        projectViewOtherEditor:
+          type: "boolean"
+        transMemoryViewOther:
+          type: "boolean"
+        transMemoryEditOther:
+          type: "boolean"
+        transMemoryExportOther:
+          type: "boolean"
+        transMemoryImportOther:
+          type: "boolean"
+        termBaseViewOther:
+          type: "boolean"
+        termBaseEditOther:
+          type: "boolean"
+        termBaseExportOther:
+          type: "boolean"
+        termBaseImportOther:
+          type: "boolean"
+        termBaseApproveOther:
+          type: "boolean"
+  IdReference:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+  ImportStatusDto:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        enum:
+        - "RUNNING"
+        - "ERROR"
+        - "OK"
+      errorMessage:
+        type: "string"
+  InconsistentTagContentWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  InconsistentTranslationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        segmentId:
+          type: "string"
+  JobExportActionDto:
+    type: "object"
+    required:
+    - "jobs"
+    properties:
+      jobs:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+        maxItems: 1000
+        minItems: 1
+  JobExportResponseDto:
+    type: "object"
+    properties:
+      jobs:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+  JobMachineTranslationSettingsV3Dto:
+    type: "object"
+    properties:
+      useMachineTranslation:
+        type: "boolean"
+        description: "Pre-translate from machine translation. Default: true"
+      machineTranslationBehavior:
+        type: "string"
+        description: "Machine translation behavior. Default: APPLY_MT_ABOVE_THRESHOLD"
+        enum:
+        - "APPLY_MT_ABOVE_THRESHOLD"
+        - "COMPARE_AND_BEST_MATCH"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% machine translation suggestions. Default:\
+          \ false"
+      confirmMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for:\n                machine\
+          \ translation suggestions above `confirmMatchesThreshold`. Default: false"
+      confirmMatchesThreshold:
+        type: "number"
+        format: "double"
+        description: "Machine translation suggestions percent. Default: `1.0`"
+        minimum: 0
+        maximum: 1
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      useAltTransOnly:
+        type: "boolean"
+        description: "Do not put machine translations to target and use alt-trans\
+          \ fields (alt-trans in mxlf).\nDefault: false"
+      mtSuggestOnlyTmBelow:
+        type: "boolean"
+        description: "Suggest MT only for segments with a TM match below. Default:\
+          \ true"
+      mtSuggestOnlyTmBelowThreshold:
+        type: "number"
+        format: "double"
+        description: "Suggest MT only for segments with a TM match below threshold.\
+          \ Default: 1.0"
+        minimum: 0
+        maximum: 1.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+    description: "Machine translation related settings"
+  JobNonTranslatableSettingsV3Dto:
+    type: "object"
+    properties:
+      preTranslateNonTranslatables:
+        type: "boolean"
+        description: "Pre-translate non-translatables. Default: true"
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% non-translatables.\
+          \ Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% non-translatables. Default: false"
+    description: "Non-translatables related settings"
+  JobPartPatchBatchDto:
+    type: "object"
+    required:
+    - "jobs"
+    properties:
+      jobs:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+        maxItems: 100
+        minItems: 1
+      status:
+        type: "string"
+        enum:
+        - "NEW"
+        - "ACCEPTED"
+        - "DECLINED"
+        - "REJECTED"
+        - "DELIVERED"
+        - "EMAILED"
+        - "COMPLETED"
+        - "CANCELLED"
+      dateDue:
+        type: "string"
+        format: "date-time"
+      clearDateDue:
+        type: "boolean"
+      providers:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProviderReference"
+      customFields:
+        $ref: "#/definitions/UpdateCustomFieldInstancesDto"
+  JobPartPatchResultDto:
+    type: "object"
+    properties:
+      updated:
+        type: "integer"
+        format: "int32"
+        description: "Number of successfully updated job parts"
+      errors:
+        type: "array"
+        description: "Errors and their counts encountered during the update"
+        items:
+          $ref: "#/definitions/ErrorDetailDtoV3"
+  JobPartSegmentsDtoV3:
+    type: "object"
+    required:
+    - "job"
+    - "segments"
+    properties:
+      job:
+        $ref: "#/definitions/UidReference"
+      segments:
+        type: "array"
+        items:
+          type: "string"
+  JobRoleDto:
+    type: "object"
+    required:
+    - "type"
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "PROJECT_OWNER"
+        - "JOB_OWNER"
+        - "PROVIDER"
+        - "GUEST"
+      workflowStep:
+        description: "not null only for `PROVIDER` type and project with defined workflow\
+          \ steps"
+        $ref: "#/definitions/ProjectWorkflowStepDtoV2"
+      organizationType:
+        type: "string"
+        description: "not null only for shared projects"
+        enum:
+        - "VENDOR"
+        - "BUYER"
+  JobTranslationMemorySettingsV3Dto:
+    type: "object"
+    properties:
+      useTranslationMemory:
+        type: "boolean"
+        description: "Pre-translate from translation memory. Default: true"
+      translationMemoryThreshold:
+        type: "number"
+        format: "double"
+        description: "Pre-translation threshold percent. Default: 0.7"
+        minimum: 0
+        maximum: 1.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% translation memory\
+          \ matches. Default: false"
+      confirm101PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 101% translation memory\
+          \ matches. Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% translation memory matches. Default: false"
+      lock101PercentMatches:
+        type: "boolean"
+        description: "Lock section: 101% translation memory matches. Default: false"
+    description: "Translation memory related settings"
+  JobWidgetReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+  JoinTagsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        sourceTagsCount:
+          type: "integer"
+          format: "int32"
+        translationTagsCount:
+          type: "integer"
+          format: "int32"
+  LINGUIST:
+    allOf:
+    - $ref: "#/definitions/AbstractUserCreateDto"
+    - type: "object"
+      properties:
+        editAllTermsInTB:
+          type: "boolean"
+          description: "Edit all terms in TB. Default: false"
+        editTranslationsInTM:
+          type: "boolean"
+          description: "Edit translations in TM. Default: false"
+        enableMT:
+          type: "boolean"
+          description: "Enable MT. Default: true"
+        mayRejectJobs:
+          type: "boolean"
+          description: "Reject jobs. Default: false"
+        mayCompleteUnconfirmedJobs:
+          type: "boolean"
+          description: "Complete unconfirmed jobs. Default: false"
+        sourceLocales:
+          type: "array"
+          items:
+            type: "string"
+        targetLocales:
+          type: "array"
+          items:
+            type: "string"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        clients:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        domains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        subDomains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        netRateScheme:
+          description: "Net rate scheme"
+          $ref: "#/definitions/UidReference"
+        translationPriceList:
+          description: "Price list"
+          $ref: "#/definitions/UidReference"
+  LINGUIST_EDIT:
+    allOf:
+    - $ref: "#/definitions/AbstractUserEditDto"
+    - type: "object"
+      properties:
+        editAllTermsInTB:
+          type: "boolean"
+          description: "Edit all terms in TB. Default: false"
+        editTranslationsInTM:
+          type: "boolean"
+          description: "Edit translations in TM. Default: false"
+        enableMT:
+          type: "boolean"
+          description: "Enable MT. Default: true"
+        mayRejectJobs:
+          type: "boolean"
+          description: "Reject jobs. Default: false"
+        mayCompleteUnconfirmedJobs:
+          type: "boolean"
+          description: "Complete unconfirmed jobs. Default: false"
+        sourceLocales:
+          type: "array"
+          items:
+            type: "string"
+        targetLocales:
+          type: "array"
+          items:
+            type: "string"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        clients:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        domains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        subDomains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        netRateScheme:
+          description: "Net rate scheme"
+          $ref: "#/definitions/UidReference"
+        translationPriceList:
+          description: "Price list"
+          $ref: "#/definitions/UidReference"
+  LINGUIST_RESPONSE:
+    allOf:
+    - $ref: "#/definitions/UserDetailsDtoV3"
+    - type: "object"
+      properties:
+        editAllTermsInTB:
+          type: "boolean"
+        editTranslationsInTM:
+          type: "boolean"
+        enableMT:
+          type: "boolean"
+        mayRejectJobs:
+          type: "boolean"
+        mayCompleteUnconfirmedJobs:
+          type: "boolean"
+        sourceLocales:
+          type: "array"
+          items:
+            type: "string"
+        targetLocales:
+          type: "array"
+          items:
+            type: "string"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/WorkflowStepReferenceV3"
+        clients:
+          type: "array"
+          items:
+            $ref: "#/definitions/ClientReference_4"
+        domains:
+          type: "array"
+          items:
+            $ref: "#/definitions/DomainReference_4"
+        subDomains:
+          type: "array"
+          items:
+            $ref: "#/definitions/SubDomainReference_4"
+        netRateScheme:
+          $ref: "#/definitions/DiscountSchemeReference_3"
+        translationPriceList:
+          $ref: "#/definitions/PriceListReference"
+  LeadingAndTrailingSpacesWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        srcPosition:
+          $ref: "#/definitions/Position"
+        srcWhitespaces:
+          type: "string"
+        tgtPosition:
+          $ref: "#/definitions/Position"
+        tgtWhitespaces:
+          type: "string"
+        suggestion:
+          $ref: "#/definitions/Suggestion"
+  Linguist (v2):
+    allOf:
+    - $ref: "#/definitions/AbstractProjectDtoV2"
+    - type: "object"
+      properties: {}
+  LoginOtherV3Dto:
+    type: "object"
+    required:
+    - "userName"
+    properties:
+      userUid:
+        type: "string"
+        description: "When not filled, default user of identity will be logged in"
+      userName:
+        type: "string"
+  LoginResponseV3Dto:
+    type: "object"
+    properties:
+      user:
+        $ref: "#/definitions/UserReference"
+      token:
+        type: "string"
+      expires:
+        type: "string"
+        format: "date-time"
+      lastInvalidateAllSessionsPerformed:
+        type: "string"
+        format: "date-time"
+  LoginToSessionResponseV3Dto:
+    type: "object"
+    properties:
+      user:
+        $ref: "#/definitions/UserReference"
+      cookie:
+        type: "string"
+      csrfToken:
+        type: "string"
+  LoginToSessionV3Dto:
+    type: "object"
+    required:
+    - "password"
+    - "userName"
+    properties:
+      userUid:
+        type: "string"
+        description: "When not filled, default user of identity will be logged in"
+      userName:
+        type: "string"
+      password:
+        type: "string"
+      rememberMe:
+        type: "boolean"
+      twoFactorCode:
+        type: "integer"
+        format: "int32"
+      captchaCode:
+        type: "string"
+  LoginV3Dto:
+    type: "object"
+    required:
+    - "password"
+    - "userName"
+    properties:
+      userUid:
+        type: "string"
+        description: "When not filled, default user of identity will be logged in"
+      userName:
+        type: "string"
+      password:
+        type: "string"
+      code:
+        type: "string"
+        description: "Required only for 2-factor authentication"
+  LqaProfilesForWsV2Dto:
+    type: "object"
+    properties:
+      workflowStep:
+        $ref: "#/definitions/IdReference"
+      lqaProfile:
+        $ref: "#/definitions/UidReference"
+  LqaProfilesForWsV3Dto:
+    type: "object"
+    properties:
+      workflowStep:
+        $ref: "#/definitions/IdReference"
+      lqaProfile:
+        $ref: "#/definitions/UidReference"
+  MTSettingsPerLanguageReference:
+    type: "object"
+    required:
+    - "targetLang"
+    properties:
+      targetLang:
+        type: "string"
+        description: "mtSettings is set for whole project if targetLang == null"
+      machineTranslateSettings:
+        $ref: "#/definitions/MachineTranslateSettingsReference"
+  MachineTranslateSettingsReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+      type:
+        type: "string"
+  MachineTranslationSettingsDto_4:
+    type: "object"
+    properties:
+      useMachineTranslation:
+        type: "boolean"
+        description: "Pre-translate from machine translation. Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% machine translation suggestions. Default:\
+          \ false"
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% translation machine\
+          \ matches. Default: false"
+      useAltTransOnly:
+        type: "boolean"
+        description: "Do not put machine translations to target and use alt-trans\
+          \ fields (alt-trans in mxlf).\nDefault: false"
+      mtQeMatchesInEditors:
+        type: "boolean"
+        description: "Display quality-estimated machine translation suggestions in\
+          \ the CAT Editor. Default: false"
+      mtForTMAbove100:
+        type: "boolean"
+        description: "Use machine translation for segments with a TM match of 100%\
+          \ or more. Default: false"
+    description: "Machine translation related settings"
+  MalformedWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        message:
+          type: "string"
+  MatchCounts101Dto_3:
+    type: "object"
+    properties:
+      match100:
+        $ref: "#/definitions/CountsDto_3"
+      match95:
+        $ref: "#/definitions/CountsDto_3"
+      match85:
+        $ref: "#/definitions/CountsDto_3"
+      match75:
+        $ref: "#/definitions/CountsDto_3"
+      match50:
+        $ref: "#/definitions/CountsDto_3"
+      match0:
+        $ref: "#/definitions/CountsDto_3"
+      match101:
+        $ref: "#/definitions/CountsDto_3"
+  MatchCountsDto_3:
+    type: "object"
+    properties:
+      match100:
+        $ref: "#/definitions/CountsDto_3"
+      match95:
+        $ref: "#/definitions/CountsDto_3"
+      match85:
+        $ref: "#/definitions/CountsDto_3"
+      match75:
+        $ref: "#/definitions/CountsDto_3"
+      match50:
+        $ref: "#/definitions/CountsDto_3"
+      match0:
+        $ref: "#/definitions/CountsDto_3"
+  MatchCountsNTDto_2:
+    type: "object"
+    properties:
+      match100:
+        $ref: "#/definitions/CountsDto_3"
+      match95:
+        $ref: "#/definitions/CountsDto_3"
+      match85:
+        $ref: "#/definitions/CountsDto_3"
+      match75:
+        $ref: "#/definitions/CountsDto_3"
+      match50:
+        $ref: "#/definitions/CountsDto_3"
+      match0:
+        $ref: "#/definitions/CountsDto_3"
+  MentionDto:
+    type: "object"
+    required:
+    - "mentionType"
+    properties:
+      mentionType:
+        type: "string"
+        enum:
+        - "USER"
+        - "GROUP"
+      mentionGroupType:
+        type: "string"
+        enum:
+        - "JOB"
+        - "OWNERS"
+        - "PROVIDERS"
+        - "GUESTS"
+        - "WORKFLOW_STEP"
+      uidReference:
+        $ref: "#/definitions/UidReference"
+      userReferences:
+        type: "array"
+        items:
+          $ref: "#/definitions/MentionableUserDto"
+      mentionableGroup:
+        $ref: "#/definitions/MentionableGroupDto"
+      tag:
+        type: "string"
+  MentionableGroupDto:
+    type: "object"
+    properties:
+      groupType:
+        type: "string"
+        enum:
+        - "JOB"
+        - "OWNERS"
+        - "PROVIDERS"
+        - "GUESTS"
+        - "WORKFLOW_STEP"
+      groupName:
+        type: "string"
+      groupReference:
+        $ref: "#/definitions/UidReference"
+  MentionableUserDto:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      userName:
+        type: "string"
+      email:
+        type: "string"
+      role:
+        type: "string"
+        enum:
+        - "SYS_ADMIN"
+        - "SYS_ADMIN_READ"
+        - "ADMIN"
+        - "PROJECT_MANAGER"
+        - "LINGUIST"
+        - "GUEST"
+        - "SUBMITTER"
+        - "PORTAL_MEMBER"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      unavailable:
+        type: "boolean"
+      jobRoles:
+        type: "array"
+        items:
+          $ref: "#/definitions/JobRoleDto"
+  MissingNonTranslatableAnnotationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        text:
+          type: "string"
+        beginIndexes:
+          type: "array"
+          items:
+            type: "integer"
+            format: "int32"
+  MissingNumbersV3WarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        number:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  MissingNumbersWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        missingNumbers:
+          type: "array"
+          items:
+            type: "string"
+  MisspelledWordDto:
+    type: "object"
+    properties:
+      word:
+        type: "string"
+      offset:
+        type: "integer"
+        format: "int32"
+  MoraviaWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        message:
+          type: "string"
+        subType:
+          type: "string"
+  MultipleSpacesV3WarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        spaces:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  MultipleSpacesWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  NestedTagsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        misplacedTargetTag:
+          type: "string"
+  NetRateSchemeReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+      isDefault:
+        type: "boolean"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+  NewerAtLowerLevelWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  NonConformingTermWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        term:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+        suggestedTargetTerms:
+          type: "array"
+          items:
+            $ref: "#/definitions/Term"
+  NonTranslatableSettingsDto_4:
+    type: "object"
+    properties:
+      preTranslateNonTranslatables:
+        type: "boolean"
+        description: "Pre-translate non-translatables. Default: false"
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% non-translatables.\
+          \ Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% non-translatables. Default: false"
+      nonTranslatablesInEditors:
+        type: "boolean"
+        description: "If non-translatables are enabled in Editors."
+    description: "Non-translatables related settings"
+  NotConfirmedWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  ObjectReference:
+    type: "object"
+  Order:
+    type: "object"
+    properties:
+      direction:
+        type: "string"
+        enum:
+        - "ASC"
+        - "DESC"
+      property:
+        type: "string"
+  PORTAL_MEMBER:
+    allOf:
+    - $ref: "#/definitions/AbstractUserCreateDto"
+    - type: "object"
+      properties: {}
+  PORTAL_MEMBER_EDIT:
+    allOf:
+    - $ref: "#/definitions/AbstractUserEditDto"
+    - type: "object"
+      properties: {}
+  PORTAL_MEMBER_RESPONSE:
+    allOf:
+    - $ref: "#/definitions/UserDetailsDtoV3"
+    - type: "object"
+      properties: {}
+  PROJECT_MANAGER:
+    allOf:
+    - $ref: "#/definitions/AbstractUserCreateDto"
+    - type: "object"
+      properties:
+        sourceLocales:
+          type: "array"
+          items:
+            type: "string"
+        targetLocales:
+          type: "array"
+          items:
+            type: "string"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        clients:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        domains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        subDomains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectCreate:
+          type: "boolean"
+          description: "Enable project creation. Default: true"
+        projectViewOther:
+          type: "boolean"
+          description: "View projects created by other users. Default: true"
+        projectEditOther:
+          type: "boolean"
+          description: "Modify projects created by other users. Default: true"
+        projectDeleteOther:
+          type: "boolean"
+          description: "Delete projects created by other users. Default: true"
+        projectClients:
+          type: "array"
+          description: "Access projects of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectBusinessUnits:
+          type: "array"
+          description: "Access projects of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectTemplateCreate:
+          type: "boolean"
+          description: "Enable project templates creation. Default: true"
+        projectTemplateViewOther:
+          type: "boolean"
+          description: "View project templates created by other users. Default: true"
+        projectTemplateEditOther:
+          type: "boolean"
+          description: "Modify project templates created by other users. Default:\
+            \ true"
+        projectTemplateDeleteOther:
+          type: "boolean"
+          description: "Delete project templates created by other users. Default:\
+            \ true"
+        projectTemplateClients:
+          type: "array"
+          description: "Access project templates of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectTemplateBusinessUnits:
+          type: "array"
+          description: "Access project templates of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        transMemoryCreate:
+          type: "boolean"
+          description: "Enable TMs creation. Default: true"
+        transMemoryViewOther:
+          type: "boolean"
+          description: "View TMs created by other users. Default: true"
+        transMemoryEditOther:
+          type: "boolean"
+          description: "Modify TMs created by other users. Default: true"
+        transMemoryDeleteOther:
+          type: "boolean"
+          description: "Delete TMs created by other users. Default: true"
+        transMemoryExportOther:
+          type: "boolean"
+          description: "Export TMs created by other users. Default: true"
+        transMemoryImportOther:
+          type: "boolean"
+          description: "Import into TMs created by other users. Default: true"
+        transMemoryClients:
+          type: "array"
+          description: "Access TMs of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        transMemoryBusinessUnits:
+          type: "array"
+          description: "Access TMs of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        termBaseCreate:
+          type: "boolean"
+          description: "Enable TBs creation. Default: true"
+        termBaseViewOther:
+          type: "boolean"
+          description: "View TBs created by other users. Default: true"
+        termBaseEditOther:
+          type: "boolean"
+          description: "Modify TBs created by other users. Default: true"
+        termBaseDeleteOther:
+          type: "boolean"
+          description: "Delete TBs created by other users. Default: true"
+        termBaseExportOther:
+          type: "boolean"
+          description: "Export TBs created by other users. Default: true"
+        termBaseImportOther:
+          type: "boolean"
+          description: "Import into TBs created by other users. Default: true"
+        termBaseApproveOther:
+          type: "boolean"
+          description: "Approve terms in TBs created by other users. Default: true"
+        termBaseClients:
+          type: "array"
+          description: "Access TBs of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        termBaseBusinessUnits:
+          type: "array"
+          description: "Access TBs of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        userCreate:
+          type: "boolean"
+          description: "Enable users creation. Default: true"
+        userViewOther:
+          type: "boolean"
+          description: "View users created by other users. Default: true"
+        userEditOther:
+          type: "boolean"
+          description: "Modify users created by other users. Default: true"
+        userDeleteOther:
+          type: "boolean"
+          description: "Delete users created by other users. Default: true"
+        clientDomainSubDomainCreate:
+          type: "boolean"
+          description: "Enable clients, domains, subdomains creation. Default: true"
+        clientDomainSubDomainViewOther:
+          type: "boolean"
+          description: "View clients, domains, subdomains created by other users.\
+            \ Default: true"
+        clientDomainSubDomainEditOther:
+          type: "boolean"
+          description: "Modify clients, domains, subdomains created by other users.\
+            \ Default: true"
+        clientDomainSubDomainDeleteOther:
+          type: "boolean"
+          description: "Delete clients, domains, subdomains created by other users.\
+            \ Default: true"
+        vendorCreate:
+          type: "boolean"
+          description: "Enable Vendors creation. Default: true"
+        vendorViewOther:
+          type: "boolean"
+          description: "View Vendors created by other users. Default: true"
+        vendorEditOther:
+          type: "boolean"
+          description: "Modify Vendors created by other users. Default: true"
+        vendorDeleteOther:
+          type: "boolean"
+          description: "Delete Vendors created by other users. Default: true"
+        dashboardSetting:
+          type: "string"
+          description: "Home page dashboards. Default: OWN_DATA"
+          enum:
+          - "ALL_DATA"
+          - "OWN_DATA"
+          - "NO_DASHBOARD"
+        setupServer:
+          type: "boolean"
+          description: "Modify setup's server settings. Default: true"
+  PROJECT_MANAGER_EDIT:
+    allOf:
+    - $ref: "#/definitions/AbstractUserEditDto"
+    - type: "object"
+      properties:
+        sourceLocales:
+          type: "array"
+          items:
+            type: "string"
+        targetLocales:
+          type: "array"
+          items:
+            type: "string"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        clients:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        domains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        subDomains:
+          type: "array"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectCreate:
+          type: "boolean"
+          description: "Enable project creation. Default: true"
+        projectViewOther:
+          type: "boolean"
+          description: "View projects created by other users. Default: true"
+        projectEditOther:
+          type: "boolean"
+          description: "Modify projects created by other users. Default: true"
+        projectDeleteOther:
+          type: "boolean"
+          description: "Delete projects created by other users. Default: true"
+        projectClients:
+          type: "array"
+          description: "Access projects of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectBusinessUnits:
+          type: "array"
+          description: "Access projects of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectTemplateCreate:
+          type: "boolean"
+          description: "Enable project templates creation. Default: true"
+        projectTemplateViewOther:
+          type: "boolean"
+          description: "View project templates created by other users. Default: true"
+        projectTemplateEditOther:
+          type: "boolean"
+          description: "Modify project templates created by other users. Default:\
+            \ true"
+        projectTemplateDeleteOther:
+          type: "boolean"
+          description: "Delete project templates created by other users. Default:\
+            \ true"
+        projectTemplateClients:
+          type: "array"
+          description: "Access project templates of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        projectTemplateBusinessUnits:
+          type: "array"
+          description: "Access project templates of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        transMemoryCreate:
+          type: "boolean"
+          description: "Enable TMs creation. Default: true"
+        transMemoryViewOther:
+          type: "boolean"
+          description: "View TMs created by other users. Default: true"
+        transMemoryEditOther:
+          type: "boolean"
+          description: "Modify TMs created by other users. Default: true"
+        transMemoryDeleteOther:
+          type: "boolean"
+          description: "Delete TMs created by other users. Default: true"
+        transMemoryExportOther:
+          type: "boolean"
+          description: "Export TMs created by other users. Default: true"
+        transMemoryImportOther:
+          type: "boolean"
+          description: "Import into TMs created by other users. Default: true"
+        transMemoryClients:
+          type: "array"
+          description: "Access TMs of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        transMemoryBusinessUnits:
+          type: "array"
+          description: "Access TMs of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        termBaseCreate:
+          type: "boolean"
+          description: "Enable TBs creation. Default: true"
+        termBaseViewOther:
+          type: "boolean"
+          description: "View TBs created by other users. Default: true"
+        termBaseEditOther:
+          type: "boolean"
+          description: "Modify TBs created by other users. Default: true"
+        termBaseDeleteOther:
+          type: "boolean"
+          description: "Delete TBs created by other users. Default: true"
+        termBaseExportOther:
+          type: "boolean"
+          description: "Export TBs created by other users. Default: true"
+        termBaseImportOther:
+          type: "boolean"
+          description: "Import into TBs created by other users. Default: true"
+        termBaseApproveOther:
+          type: "boolean"
+          description: "Approve terms in TBs created by other users. Default: true"
+        termBaseClients:
+          type: "array"
+          description: "Access TBs of a selected clients only"
+          items:
+            $ref: "#/definitions/UidReference"
+        termBaseBusinessUnits:
+          type: "array"
+          description: "Access TBs of selected business units only"
+          items:
+            $ref: "#/definitions/UidReference"
+        userCreate:
+          type: "boolean"
+          description: "Enable users creation. Default: true"
+        userViewOther:
+          type: "boolean"
+          description: "View users created by other users. Default: true"
+        userEditOther:
+          type: "boolean"
+          description: "Modify users created by other users. Default: true"
+        userDeleteOther:
+          type: "boolean"
+          description: "Delete users created by other users. Default: true"
+        clientDomainSubDomainCreate:
+          type: "boolean"
+          description: "Enable clients, domains, subdomains creation. Default: true"
+        clientDomainSubDomainViewOther:
+          type: "boolean"
+          description: "View clients, domains, subdomains created by other users.\
+            \ Default: true"
+        clientDomainSubDomainEditOther:
+          type: "boolean"
+          description: "Modify clients, domains, subdomains created by other users.\
+            \ Default: true"
+        clientDomainSubDomainDeleteOther:
+          type: "boolean"
+          description: "Delete clients, domains, subdomains created by other users.\
+            \ Default: true"
+        vendorCreate:
+          type: "boolean"
+          description: "Enable Vendors creation. Default: true"
+        vendorViewOther:
+          type: "boolean"
+          description: "View Vendors created by other users. Default: true"
+        vendorEditOther:
+          type: "boolean"
+          description: "Modify Vendors created by other users. Default: true"
+        vendorDeleteOther:
+          type: "boolean"
+          description: "Delete Vendors created by other users. Default: true"
+        dashboardSetting:
+          type: "string"
+          description: "Home page dashboards. Default: OWN_DATA"
+          enum:
+          - "ALL_DATA"
+          - "OWN_DATA"
+          - "NO_DASHBOARD"
+        setupServer:
+          type: "boolean"
+          description: "Modify setup's server settings. Default: true"
+  PROJECT_MANAGER_RESPONSE:
+    allOf:
+    - $ref: "#/definitions/UserDetailsDtoV3"
+    - type: "object"
+      properties:
+        sourceLocales:
+          type: "array"
+          items:
+            type: "string"
+        targetLocales:
+          type: "array"
+          items:
+            type: "string"
+        workflowSteps:
+          type: "array"
+          items:
+            $ref: "#/definitions/WorkflowStepReferenceV3"
+        clients:
+          type: "array"
+          items:
+            $ref: "#/definitions/ClientReference_4"
+        domains:
+          type: "array"
+          items:
+            $ref: "#/definitions/DomainReference_4"
+        subDomains:
+          type: "array"
+          items:
+            $ref: "#/definitions/SubDomainReference_4"
+        projectCreate:
+          type: "boolean"
+        projectViewOther:
+          type: "boolean"
+        projectEditOther:
+          type: "boolean"
+        projectDeleteOther:
+          type: "boolean"
+        projectClients:
+          type: "array"
+          items:
+            $ref: "#/definitions/ClientReference_4"
+        projectBusinessUnits:
+          type: "array"
+          items:
+            $ref: "#/definitions/BusinessUnitReference_3"
+        projectTemplateCreate:
+          type: "boolean"
+        projectTemplateViewOther:
+          type: "boolean"
+        projectTemplateEditOther:
+          type: "boolean"
+        projectTemplateDeleteOther:
+          type: "boolean"
+        projectTemplateClients:
+          type: "array"
+          items:
+            $ref: "#/definitions/ClientReference_4"
+        projectTemplateBusinessUnits:
+          type: "array"
+          items:
+            $ref: "#/definitions/BusinessUnitReference_3"
+        transMemoryCreate:
+          type: "boolean"
+        transMemoryViewOther:
+          type: "boolean"
+        transMemoryEditOther:
+          type: "boolean"
+        transMemoryDeleteOther:
+          type: "boolean"
+        transMemoryExportOther:
+          type: "boolean"
+        transMemoryImportOther:
+          type: "boolean"
+        transMemoryClients:
+          type: "array"
+          items:
+            $ref: "#/definitions/ClientReference_4"
+        transMemoryBusinessUnits:
+          type: "array"
+          items:
+            $ref: "#/definitions/BusinessUnitReference_3"
+        termBaseCreate:
+          type: "boolean"
+        termBaseViewOther:
+          type: "boolean"
+        termBaseEditOther:
+          type: "boolean"
+        termBaseDeleteOther:
+          type: "boolean"
+        termBaseExportOther:
+          type: "boolean"
+        termBaseImportOther:
+          type: "boolean"
+        termBaseApproveOther:
+          type: "boolean"
+        termBaseClients:
+          type: "array"
+          items:
+            $ref: "#/definitions/ClientReference_4"
+        termBaseBusinessUnits:
+          type: "array"
+          items:
+            $ref: "#/definitions/BusinessUnitReference_3"
+        userCreate:
+          type: "boolean"
+        userViewOther:
+          type: "boolean"
+        userEditOther:
+          type: "boolean"
+        userDeleteOther:
+          type: "boolean"
+        clientDomainSubDomainCreate:
+          type: "boolean"
+        clientDomainSubDomainViewOther:
+          type: "boolean"
+        clientDomainSubDomainEditOther:
+          type: "boolean"
+        clientDomainSubDomainDeleteOther:
+          type: "boolean"
+        vendorCreate:
+          type: "boolean"
+        vendorViewOther:
+          type: "boolean"
+        vendorEditOther:
+          type: "boolean"
+        vendorDeleteOther:
+          type: "boolean"
+        dashboardSetting:
+          type: "string"
+        setupServer:
+          type: "boolean"
+  PageDtoAnalyseReference:
+    type: "object"
+    properties:
+      totalElements:
+        type: "integer"
+        format: "int32"
+      totalPages:
+        type: "integer"
+        format: "int32"
+      pageSize:
+        type: "integer"
+        format: "int32"
+      pageNumber:
+        type: "integer"
+        format: "int32"
+      numberOfElements:
+        type: "integer"
+        format: "int32"
+      content:
+        type: "array"
+        items:
+          $ref: "#/definitions/AnalyseReference"
+      sort:
+        $ref: "#/definitions/Sort"
+  PlainConversationDto:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      type:
+        type: "string"
+        description: "SEGMENT_TARGET"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      dateModified:
+        type: "string"
+        format: "date-time"
+      dateEdited:
+        type: "string"
+        format: "date-time"
+      createdBy:
+        $ref: "#/definitions/MentionableUserDto"
+      comments:
+        type: "array"
+        items:
+          $ref: "#/definitions/CommentDto"
+      status:
+        $ref: "#/definitions/StatusDto"
+      deleted:
+        type: "boolean"
+      references:
+        $ref: "#/definitions/PlainReferences"
+  PlainReferences:
+    type: "object"
+    required:
+    - "segmentId"
+    - "transGroupId"
+    properties:
+      taskId:
+        type: "string"
+        readOnly: true
+      jobPartUid:
+        type: "string"
+        readOnly: true
+      transGroupId:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+      segmentId:
+        type: "string"
+      conversationTitle:
+        type: "string"
+      conversationTitleOffset:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+      commentedText:
+        type: "string"
+      correlation:
+        $ref: "#/definitions/ReferenceCorrelation"
+  Position:
+    type: "object"
+    properties:
+      beginIndex:
+        type: "integer"
+        format: "int32"
+      endIndex:
+        type: "integer"
+        format: "int32"
+  PostAnalyse:
+    allOf:
+    - $ref: "#/definitions/AbstractAnalyseSettingsDto"
+    - type: "object"
+      properties:
+        transMemoryPostEditing:
+          type: "boolean"
+          description: "Default: false"
+        nonTranslatablePostEditing:
+          type: "boolean"
+          description: "Default: false"
+        machineTranslatePostEditing:
+          type: "boolean"
+          description: "Default: false"
+  PreAnalyse:
+    allOf:
+    - $ref: "#/definitions/AbstractAnalyseSettingsDto"
+    - type: "object"
+      properties:
+        includeFuzzyRepetitions:
+          type: "boolean"
+          description: "Default: false"
+        separateFuzzyRepetitions:
+          type: "boolean"
+          description: "Default: false"
+        includeNonTranslatables:
+          type: "boolean"
+          description: "Default: false"
+        includeMachineTranslationMatches:
+          type: "boolean"
+          description: "Default: false"
+  PreAnalyseTarget, Compare:
+    allOf:
+    - $ref: "#/definitions/AbstractAnalyseSettingsDto"
+    - type: "object"
+      properties:
+        transMemoryPostEditing:
+          type: "boolean"
+          description: "Default: false"
+        nonTranslatablePostEditing:
+          type: "boolean"
+          description: "Default: false"
+        machineTranslatePostEditing:
+          type: "boolean"
+          description: "Default: false"
+        includeFuzzyRepetitions:
+          type: "boolean"
+          description: "Default: false"
+        separateFuzzyRepetitions:
+          type: "boolean"
+          description: "Default: false"
+        includeNonTranslatables:
+          type: "boolean"
+          description: "Default: false"
+        includeMachineTranslationMatches:
+          type: "boolean"
+          description: "Default: false"
+  PreTranslateJobSettingsV3Dto:
+    type: "object"
+    properties:
+      autoPropagateRepetitions:
+        type: "boolean"
+        description: "Propagate repetitions. Default: false"
+      confirmRepetitions:
+        type: "boolean"
+        description: "Set segment status to confirmed for: Repetitions. Default: false"
+      setJobStatusCompleted:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Set job to completed once\
+          \ pre-translated. Default: false"
+      setJobStatusCompletedWhenConfirmed:
+        type: "boolean"
+        description: "Pre-translate & set job to completed when all segments confirmed:\n\
+          Set job to completed once pre-translated and all segments are confirmed.\
+          \ Default: false"
+      setProjectStatusCompleted:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Set project to completed\
+          \ once all jobs pre-translated.\n        Default: false"
+      overwriteExistingTranslations:
+        type: "boolean"
+        description: "Overwrite existing translations in target segments. Default:\
+          \ false"
+      translationMemorySettings:
+        $ref: "#/definitions/JobTranslationMemorySettingsV3Dto"
+      machineTranslationSettings:
+        $ref: "#/definitions/JobMachineTranslationSettingsV3Dto"
+      nonTranslatableSettings:
+        $ref: "#/definitions/JobNonTranslatableSettingsV3Dto"
+    description: "Pre-translate settings"
+  PreTranslateJobsV3Dto:
+    type: "object"
+    required:
+    - "jobs"
+    properties:
+      jobs:
+        type: "array"
+        description: "Jobs to be pre-translated"
+        items:
+          $ref: "#/definitions/UidReference"
+        maxItems: 100
+        minItems: 1
+      segmentFilters:
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "LOCKED"
+          - "NOT_LOCKED"
+      useProjectPreTranslateSettings:
+        type: "boolean"
+        description: "If pre-translate settings from project should be used.\nIf true,\
+          \ preTranslateSettings values are ignored. Default: `false`"
+      callbackUrl:
+        type: "string"
+      preTranslateSettings:
+        description: "Pre-translate settings, used if useProjectPreTranslateSettings\
+          \ is false"
+        $ref: "#/definitions/PreTranslateJobSettingsV3Dto"
+  PreTranslateSettingsV3Dto:
+    type: "object"
+    properties:
+      preTranslateOnJobCreation:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Pre-translate on job creation.\
+          \ Default: false"
+      setJobStatusCompleted:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Set job to completed once\
+          \ pre-translated. Default: false"
+      setJobStatusCompletedWhenConfirmed:
+        type: "boolean"
+        description: "Pre-translate & set job to completed when all segments confirmed:\n\
+          Set job to completed once pre-translated and all segments are confirmed.\
+          \ Default: false"
+      setProjectStatusCompleted:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Set project to completed\
+          \ once all jobs pre-translated.\n        Default: false"
+      overwriteExistingTranslations:
+        type: "boolean"
+        description: "Overwrite existing translations in target segments. Default:\
+          \ false"
+      translationMemorySettings:
+        $ref: "#/definitions/TranslationMemorySettingsDto_4"
+      machineTranslationSettings:
+        $ref: "#/definitions/MachineTranslationSettingsDto_4"
+      nonTranslatableSettings:
+        $ref: "#/definitions/NonTranslatableSettingsDto_4"
+      repetitionsSettings:
+        $ref: "#/definitions/RepetitionsSettingsDto_3"
+    description: "Pre-translate settings"
+  PriceListReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      uid:
+        type: "string"
+  ProgressDtoV2:
+    type: "object"
+    properties:
+      totalCount:
+        type: "integer"
+        format: "int32"
+      finishedCount:
+        type: "integer"
+        format: "int32"
+      overdueCount:
+        type: "integer"
+        format: "int32"
+  ProjectReference:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      uid:
+        type: "string"
+  ProjectTemplateTransMemoryDtoV3:
+    type: "object"
+    properties:
+      targetLocale:
+        type: "string"
+      workflowStep:
+        $ref: "#/definitions/WorkflowStepReferenceV3"
+      readMode:
+        type: "boolean"
+      writeMode:
+        type: "boolean"
+      transMemory:
+        $ref: "#/definitions/TransMemoryDtoV3"
+      penalty:
+        type: "number"
+        format: "double"
+      applyPenaltyTo101Only:
+        type: "boolean"
+      order:
+        type: "integer"
+        format: "int32"
+  ProjectTemplateTransMemoryListDtoV3:
+    type: "object"
+    properties:
+      transMemories:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProjectTemplateTransMemoryDtoV3"
+  ProjectTransMemoryDtoV3:
+    type: "object"
+    properties:
+      transMemory:
+        $ref: "#/definitions/TransMemoryDtoV3"
+      penalty:
+        type: "number"
+        format: "double"
+      applyPenaltyTo101Only:
+        type: "boolean"
+      targetLocale:
+        type: "string"
+      workflowStep:
+        $ref: "#/definitions/WorkflowStepReferenceV3"
+      readMode:
+        type: "boolean"
+      writeMode:
+        type: "boolean"
+      order:
+        type: "integer"
+        format: "int32"
+  ProjectTransMemoryListDtoV3:
+    type: "object"
+    properties:
+      transMemories:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProjectTransMemoryDtoV3"
+  ProjectWorkflowSettingsReference:
+    type: "object"
+    properties:
+      propagateTranslationsToLowerWfDuringUpdateSource:
+        type: "boolean"
+  ProjectWorkflowStepDtoV2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      abbreviation:
+        type: "string"
+      name:
+        type: "string"
+      workflowLevel:
+        type: "integer"
+        format: "int32"
+      workflowStep:
+        $ref: "#/definitions/WorkflowStepReferenceV2"
+  ProviderReference:
+    type: "object"
+    required:
+    - "type"
+    discriminator: "type"
+    properties:
+      type:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+        readOnly: true
+  QualityAssuranceBatchRunDtoV3:
+    type: "object"
+    required:
+    - "jobs"
+    properties:
+      jobs:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+        maxItems: 500
+        minItems: 1
+      settings:
+        $ref: "#/definitions/QualityAssuranceRunDtoV3"
+      maxQaWarningsCount:
+        type: "integer"
+        format: "int32"
+        description: "Maximum number of QA warnings in result, default: 100. For efficiency\
+          \ reasons QA\nwarnings are processed with minimum segments chunk size 10,\
+          \ therefore slightly more warnings are returned."
+        minimum: 1
+        maximum: 1000
+  QualityAssuranceResponseDto:
+    type: "object"
+    properties:
+      segmentWarnings:
+        type: "array"
+        items:
+          $ref: "#/definitions/SegmentWarningsDto"
+      finished:
+        type: "boolean"
+  QualityAssuranceRunDtoV3:
+    type: "object"
+    properties:
+      initialSegment:
+        $ref: "#/definitions/SegmentReference"
+      maxQaWarningsCount:
+        type: "integer"
+        format: "int32"
+        description: "Maximum number of QA warnings in result, default: 100. For efficiency\
+          \ reasons QA\nwarnings are processed with minimum segments chunk size 10,\
+          \ therefore slightly more warnings are returned."
+        minimum: 1
+        maximum: 1000
+      warningTypes:
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "EmptyTranslation"
+          - "TrailingPunctuation"
+          - "Formatting"
+          - "JoinTags"
+          - "MissingNumbersV3"
+          - "MultipleSpacesV3"
+          - "NonConformingTerm"
+          - "NotConfirmed"
+          - "TranslationLength"
+          - "AbsoluteLength"
+          - "RelativeLength"
+          - "UnresolvedComment"
+          - "EmptyPairTags"
+          - "InconsistentTranslationTargetSource"
+          - "InconsistentTranslationSourceTarget"
+          - "ForbiddenString"
+          - "SpellCheck"
+          - "RepeatedWord"
+          - "InconsistentTagContent"
+          - "EmptyTagContent"
+          - "Malformed"
+          - "ForbiddenTerm"
+          - "NewerAtLowerLevel"
+          - "LeadingAndTrailingSpaces"
+          - "LeadingSpaces"
+          - "TrailingSpaces"
+          - "TargetSourceIdentical"
+          - "SourceOrTargetRegexp"
+          - "UnmodifiedFuzzyTranslation"
+          - "UnmodifiedFuzzyTranslationTM"
+          - "UnmodifiedFuzzyTranslationMTNT"
+          - "Moravia"
+          - "ExtraNumbersV3"
+          - "UnresolvedConversation"
+          - "NestedTags"
+          - "FuzzyInconsistencyTargetSource"
+          - "FuzzyInconsistencySourceTarget"
+          - "CustomQA"
+          - "MissingNonTranslatableAnnotation"
+        maxItems: 100
+        minItems: 0
+  QualityAssuranceSegmentsRunDtoV3:
+    type: "object"
+    required:
+    - "jobsAndSegments"
+    properties:
+      jobsAndSegments:
+        type: "array"
+        items:
+          $ref: "#/definitions/JobPartSegmentsDtoV3"
+        maxItems: 100
+        minItems: 1
+      warningTypes:
+        type: "array"
+        description: "When empty only fast checks run"
+        items:
+          type: "string"
+          enum:
+          - "EmptyTranslation"
+          - "TrailingPunctuation"
+          - "Formatting"
+          - "JoinTags"
+          - "MissingNumbersV3"
+          - "MultipleSpacesV3"
+          - "NonConformingTerm"
+          - "NotConfirmed"
+          - "TranslationLength"
+          - "AbsoluteLength"
+          - "RelativeLength"
+          - "UnresolvedComment"
+          - "EmptyPairTags"
+          - "InconsistentTranslationTargetSource"
+          - "InconsistentTranslationSourceTarget"
+          - "ForbiddenString"
+          - "SpellCheck"
+          - "RepeatedWord"
+          - "InconsistentTagContent"
+          - "EmptyTagContent"
+          - "Malformed"
+          - "ForbiddenTerm"
+          - "NewerAtLowerLevel"
+          - "LeadingAndTrailingSpaces"
+          - "LeadingSpaces"
+          - "TrailingSpaces"
+          - "TargetSourceIdentical"
+          - "SourceOrTargetRegexp"
+          - "UnmodifiedFuzzyTranslation"
+          - "UnmodifiedFuzzyTranslationTM"
+          - "UnmodifiedFuzzyTranslationMTNT"
+          - "Moravia"
+          - "ExtraNumbersV3"
+          - "UnresolvedConversation"
+          - "NestedTags"
+          - "FuzzyInconsistencyTargetSource"
+          - "FuzzyInconsistencySourceTarget"
+          - "CustomQA"
+          - "MissingNonTranslatableAnnotation"
+        maxItems: 100
+        minItems: 0
+      maxQaWarningsCount:
+        type: "integer"
+        format: "int32"
+        description: "Maximum number of QA warnings in result, default: 100. For efficiency\
+          \ reasons QA\nwarnings are processed with minimum segments chunk size 10,\
+          \ therefore slightly more warnings are returned."
+        minimum: 1
+        maximum: 1000
+  ReferenceCorrelation:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      role:
+        type: "string"
+        enum:
+        - "PARENT"
+  ReferenceFileReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      filename:
+        type: "string"
+      note:
+        type: "string"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+  RelativeTranslationLengthWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        limit:
+          type: "string"
+  RepeatedWordWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        word:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  RepeatedWordsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        repeatedWords:
+          type: "array"
+          items:
+            type: "string"
+  RepetitionsSettingsDto_3:
+    type: "object"
+    properties:
+      autoPropagateRepetitions:
+        type: "boolean"
+        description: "Propagate repetitions. Default: false"
+      confirmRepetitions:
+        type: "boolean"
+        description: "Set segment status to confirmed for: Repetitions. Default: false"
+      autoPropagateToLockedRepetitions:
+        type: "boolean"
+        description: "Changes in 1st repetition propagate upon confirmation into subsequent\
+          \ locked repetitions. Default: false"
+      lockSubsequentRepetitions:
+        type: "boolean"
+        description: "If auto-propagated subsequent repetitions should be locked.\
+          \ Default: false"
+    description: "Repetitions related settings"
+  SUBMITTER:
+    allOf:
+    - $ref: "#/definitions/AbstractUserCreateDto"
+    - type: "object"
+      properties:
+        automationWidgets:
+          type: "array"
+          description: "If no automation widgets are assigned in request the default\
+            \ automation widgets will be assigned instead"
+          items:
+            $ref: "#/definitions/IdReference"
+        projectViewCreatedByOtherSubmitters:
+          type: "boolean"
+          description: "View projects created by other Submitters. Default: false"
+  SUBMITTER_EDIT:
+    allOf:
+    - $ref: "#/definitions/AbstractUserEditDto"
+    - type: "object"
+      required:
+      - "automationWidgets"
+      properties:
+        automationWidgets:
+          type: "array"
+          items:
+            $ref: "#/definitions/IdReference"
+        projectViewCreatedByOtherSubmitters:
+          type: "boolean"
+          description: "View projects created by other Submitters. Default: false"
+  SUBMITTER_RESPONSE:
+    allOf:
+    - $ref: "#/definitions/UserDetailsDtoV3"
+    - type: "object"
+      required:
+      - "automationWidgets"
+      properties:
+        automationWidgets:
+          type: "array"
+          items:
+            $ref: "#/definitions/JobWidgetReference"
+        projectViewCreatedByOtherSubmitters:
+          type: "boolean"
+  SearchResponseListTmDtoV3:
+    type: "object"
+    properties:
+      searchResults:
+        type: "array"
+        items:
+          $ref: "#/definitions/SearchTMResponseDtoV3"
+  SearchTMByJobRequestDtoV3:
+    type: "object"
+    required:
+    - "query"
+    properties:
+      query:
+        type: "string"
+      reverse:
+        type: "boolean"
+        description: "Default: false"
+      scoreThreshold:
+        type: "number"
+        format: "double"
+        description: "Default: 0.0"
+        minimum: 0.0
+        maximum: 1.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      maxResults:
+        type: "integer"
+        format: "int32"
+        description: "Default: 15"
+        minimum: 1
+        maximum: 100
+  SearchTMClientDtoV3:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+  SearchTMDomainDtoV3:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+  SearchTMProjectDtoV3:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+  SearchTMResponseDtoV3:
+    type: "object"
+    properties:
+      segmentId:
+        type: "string"
+      source:
+        $ref: "#/definitions/SearchTMSegmentDtoV3"
+      translations:
+        type: "array"
+        items:
+          $ref: "#/definitions/SearchTMSegmentDtoV3"
+      transMemory:
+        $ref: "#/definitions/SearchTMTransMemoryDtoV3"
+      grossScore:
+        type: "number"
+        format: "double"
+      score:
+        type: "number"
+        format: "double"
+      subSegment:
+        type: "boolean"
+  SearchTMSegmentDtoV3:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      text:
+        type: "string"
+      lang:
+        type: "string"
+      rtl:
+        type: "boolean"
+      modifiedAt:
+        type: "integer"
+        format: "int64"
+      createdAt:
+        type: "integer"
+        format: "int64"
+      modifiedBy:
+        $ref: "#/definitions/UserReference"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+      filename:
+        type: "string"
+      project:
+        $ref: "#/definitions/SearchTMProjectDtoV3"
+      client:
+        $ref: "#/definitions/SearchTMClientDtoV3"
+      domain:
+        $ref: "#/definitions/SearchTMDomainDtoV3"
+      subDomain:
+        $ref: "#/definitions/SearchTMSubDomainDtoV3"
+      tagMetadata:
+        type: "array"
+        items:
+          $ref: "#/definitions/TagMetadata"
+      previousSegment:
+        type: "string"
+      nextSegment:
+        type: "string"
+      key:
+        type: "string"
+      targetNote:
+        type: "string"
+  SearchTMSubDomainDtoV3:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+  SearchTMTransMemoryDtoV3:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      id:
+        type: "string"
+      name:
+        type: "string"
+      reverse:
+        type: "boolean"
+  SegmentReference:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+  SegmentWarningDto:
+    type: "object"
+    discriminator: "type"
+    properties:
+      id:
+        type: "string"
+      ignored:
+        type: "boolean"
+      type:
+        type: "string"
+      repetitionGroupId:
+        type: "string"
+  SegmentWarningsDto:
+    type: "object"
+    properties:
+      segmentId:
+        type: "string"
+      warnings:
+        type: "array"
+        items:
+          $ref: "#/definitions/SegmentWarningDto"
+      ignoredChecks:
+        type: "array"
+        items:
+          type: "string"
+  SetContextTransMemoriesDtoV3Dto:
+    type: "object"
+    required:
+    - "transMemories"
+    properties:
+      transMemories:
+        type: "array"
+        items:
+          $ref: "#/definitions/SetProjectTransMemoryV3Dto"
+      targetLang:
+        type: "string"
+        description: "Set translation memory only for the specific project target\
+          \ language"
+      workflowStep:
+        description: "Set translation memory only for the specific workflow step"
+        $ref: "#/definitions/UidReference"
+      orderEnabled:
+        type: "boolean"
+        description: "Default: false"
+  SetProjectTransMemoriesV3Dto:
+    type: "object"
+    required:
+    - "dataPerContext"
+    properties:
+      dataPerContext:
+        type: "array"
+        items:
+          $ref: "#/definitions/SetContextTransMemoriesDtoV3Dto"
+  SetProjectTransMemoryV3Dto:
+    type: "object"
+    required:
+    - "transMemory"
+    properties:
+      transMemory:
+        $ref: "#/definitions/UidReference"
+      readMode:
+        type: "boolean"
+        description: "Default: false"
+      writeMode:
+        type: "boolean"
+        description: "Can be set only for Translation Memory with read == true.<br/>\n\
+          \        Max 2 write TMs allowed per project.<br/>\n        Default: false"
+      penalty:
+        type: "number"
+        format: "double"
+        minimum: 0.0
+        maximum: 100.0
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      applyPenaltyTo101Only:
+        type: "boolean"
+        description: "Can be set only for penalty == 1<br/>Default: false"
+      order:
+        type: "integer"
+        format: "int32"
+  Sort:
+    type: "object"
+    properties:
+      orders:
+        type: "array"
+        items:
+          $ref: "#/definitions/Order"
+  SourceTargetRegexpWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        description:
+          type: "string"
+  SpellCheckWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        misspelledWords:
+          type: "array"
+          items:
+            $ref: "#/definitions/MisspelledWordDto"
+  StatusDto:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        enum:
+        - "resolved"
+        - "unresolved"
+      by:
+        $ref: "#/definitions/MentionableUserDto"
+      date:
+        type: "string"
+        format: "date-time"
+  SubDomainReference:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  SubDomainReference_4:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  Suggestion:
+    type: "object"
+    properties:
+      text:
+        type: "string"
+  TagMetadata:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      type:
+        type: "string"
+      content:
+        type: "string"
+      transAttributes:
+        type: "string"
+  TargetSourceIdenticalWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  Term:
+    type: "object"
+    properties:
+      text:
+        type: "string"
+      preferred:
+        type: "boolean"
+  TerminologyWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        missingTerms:
+          type: "array"
+          items:
+            type: "string"
+        forbiddenTerms:
+          type: "array"
+          items:
+            type: "string"
+  TrailingPunctuationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        srcPosition:
+          $ref: "#/definitions/Position"
+        srcEndPunctuation:
+          type: "string"
+        tgtPosition:
+          $ref: "#/definitions/Position"
+        tgtEndPunctuation:
+          type: "string"
+        suggestedTgtEndPunctuation:
+          type: "string"
+  TrailingSpaceWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  TransMemoryDtoV3:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      internalId:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+      sourceLang:
+        type: "string"
+      targetLangs:
+        type: "array"
+        items:
+          type: "string"
+      client:
+        $ref: "#/definitions/ClientReference"
+      businessUnit:
+        $ref: "#/definitions/BusinessUnitReference"
+      domain:
+        $ref: "#/definitions/DomainReference"
+      subDomain:
+        $ref: "#/definitions/SubDomainReference"
+      note:
+        type: "string"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      createdBy:
+        $ref: "#/definitions/UserReference"
+  TransMemoryReferenceDtoV2:
+    type: "object"
+    required:
+    - "uid"
+    properties:
+      internalId:
+        type: "integer"
+        format: "int32"
+      uid:
+        type: "string"
+      name:
+        type: "string"
+      sourceLang:
+        type: "string"
+      targetLangs:
+        type: "array"
+        items:
+          type: "string"
+  TranslationLengthWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  TranslationMemorySettingsDto_4:
+    type: "object"
+    properties:
+      useTranslationMemory:
+        type: "boolean"
+        description: "Pre-translate from translation memory. Default: false"
+      translationMemoryThreshold:
+        type: "number"
+        format: "double"
+        description: "Pre-translation threshold percent"
+        minimum: 0
+        maximum: 1.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% translation memory\
+          \ matches. Default: false"
+      confirm101PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 101% translation memory\
+          \ matches. Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% translation memory matches. Default: false"
+      lock101PercentMatches:
+        type: "boolean"
+        description: "Lock section: 101% translation memory matches. Default: false"
+    description: "Translation memory related settings"
+  USER:
+    allOf:
+    - $ref: "#/definitions/ProviderReference"
+    - type: "object"
+      properties:
+        userName:
+          type: "string"
+          readOnly: true
+        firstName:
+          type: "string"
+          readOnly: true
+        lastName:
+          type: "string"
+          readOnly: true
+        email:
+          type: "string"
+          readOnly: true
+        active:
+          type: "boolean"
+          readOnly: true
+  UidReference:
+    type: "object"
+    required:
+    - "uid"
+    properties:
+      uid:
+        type: "string"
+  UnmodifiedFuzzyTranslationMTNTWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        transOrigin:
+          type: "string"
+  UnmodifiedFuzzyTranslationTMWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        transOrigin:
+          type: "string"
+  UnmodifiedFuzzyTranslationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        transOrigin:
+          type: "string"
+  UnresolvedCommentWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  UnresolvedConversationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  UpdateCustomFieldInstanceWithUidDto:
+    type: "object"
+    required:
+    - "customFieldInstance"
+    properties:
+      customFieldInstance:
+        $ref: "#/definitions/UidReference"
+      customField:
+        $ref: "#/definitions/UidReference"
+      selectedOptions:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+      value:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+  UpdateCustomFieldInstancesDto:
+    type: "object"
+    properties:
+      addInstances:
+        type: "array"
+        items:
+          $ref: "#/definitions/CreateCustomFieldInstanceDto"
+      removeInstances:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+      updateInstances:
+        type: "array"
+        items:
+          $ref: "#/definitions/UpdateCustomFieldInstanceWithUidDto"
+  UserDetailsDtoV3:
+    type: "object"
+    required:
+    - "email"
+    - "firstName"
+    - "lastName"
+    - "role"
+    - "timezone"
+    - "uid"
+    - "userName"
+    discriminator: "role"
+    properties:
+      uid:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      userName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      firstName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      lastName:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      email:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      dateCreated:
+        type: "string"
+        format: "date-time"
+      dateDeleted:
+        type: "string"
+        format: "date-time"
+      createdBy:
+        $ref: "#/definitions/UserReference_2"
+      role:
+        type: "string"
+        enum:
+        - "ADMIN"
+        - "PROJECT_MANAGER"
+        - "LINGUIST"
+        - "GUEST"
+        - "SUBMITTER"
+        - "PORTAL_MEMBER"
+      assignableRoles:
+        type: "array"
+        items:
+          type: "string"
+      timezone:
+        type: "string"
+        minLength: 0
+        maxLength: 255
+      note:
+        type: "string"
+        minLength: 0
+        maxLength: 4096
+      receiveNewsletter:
+        type: "boolean"
+      active:
+        type: "boolean"
+      pendingEmailChange:
+        type: "boolean"
+        description: "If user has email change pending (new email not verified)"
+      twoFactorAuthEnabled:
+        type: "boolean"
+        description: "If user has 2FA key configured"
+      credentialsReadonly:
+        type: "boolean"
+        description: "If user credentials are readonly due to SSO"
+    description: "User with all belonging objects"
+  UserReference:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      userName:
+        type: "string"
+      email:
+        type: "string"
+      role:
+        type: "string"
+        enum:
+        - "SYS_ADMIN"
+        - "SYS_ADMIN_READ"
+        - "ADMIN"
+        - "PROJECT_MANAGER"
+        - "LINGUIST"
+        - "GUEST"
+        - "SUBMITTER"
+        - "PORTAL_MEMBER"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  UserReference_2:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      userName:
+        type: "string"
+      email:
+        type: "string"
+      role:
+        type: "string"
+        enum:
+        - "SYS_ADMIN"
+        - "SYS_ADMIN_READ"
+        - "ADMIN"
+        - "PROJECT_MANAGER"
+        - "LINGUIST"
+        - "GUEST"
+        - "SUBMITTER"
+        - "PORTAL_MEMBER"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+  VENDOR:
+    allOf:
+    - $ref: "#/definitions/ProviderReference"
+    - type: "object"
+      properties:
+        name:
+          type: "string"
+          readOnly: true
+        defaultProjectOwnerId:
+          type: "integer"
+          format: "int64"
+  WildCardSearchByJobRequestDtoV3:
+    type: "object"
+    required:
+    - "query"
+    properties:
+      query:
+        type: "string"
+      reverse:
+        type: "boolean"
+        description: "Default: false"
+      count:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 50
+      offset:
+        type: "integer"
+        format: "int32"
+  WorkflowStepReferenceV2:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      uid:
+        type: "string"
+      id:
+        type: "string"
+      order:
+        type: "integer"
+        format: "int32"
+      lqaEnabled:
+        type: "boolean"
+  WorkflowStepReferenceV3:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      id:
+        type: "string"
+      uid:
+        type: "string"
+      order:
+        type: "integer"
+        format: "int32"
+      lqaEnabled:
+        type: "boolean"

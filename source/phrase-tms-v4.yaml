@@ -1,0 +1,1298 @@
+---
+swagger: "2.0"
+info:
+  description: "Welcome to Phrase's TMS API documentation. \n\n Please visit our [help\
+    \ center](https://support.phrase.com/hc/en-us/sections/5709662083612) for more\
+    \ information about the APIs. \n\n If you have any questions, please contact [Support](https://support.phrase.com/hc/requests/new).\
+    \ \n\n Please, include the `User-Agent` header with the name of your application\
+    \ or project. It might be a good idea to include some sort of contact information\
+    \ as well, so that we can get in touch if necessary. Examples of excellent `User-Agent`\
+    \ headers:\n > User-Agent: Example mobile app (example@phrase.com) <br/> User-Agent:\
+    \ ACME Inc Java 1.8 Client (http://acmeinc.com/contact)"
+  version: "4"
+  title: "Phrase TMS API"
+host: "cloud.memsource.com"
+basePath: "/web"
+tags:
+- name: "Bilingual File"
+- name: "Project"
+- name: "Project Template"
+- name: "Quality Assurance"
+schemes:
+- "https"
+paths:
+  /api2/v4/projectTemplates/{projectTemplateUid}/preTranslateSettings:
+    get:
+      tags:
+      - "Project Template"
+      summary: "Get project template pre-translate settings"
+      description: ""
+      operationId: "getProjectTemplatePreTranslateSettingsV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectTemplateUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV4Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+    put:
+      tags:
+      - "Project Template"
+      summary: "Update project template pre-translate settings"
+      description: ""
+      operationId: "updateProjectTemplatePreTranslateSettingsV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectTemplateUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/PreTranslateSettingsV4Dto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV4Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/jobs/qualityAssurances/run:
+    post:
+      tags:
+      - "Quality Assurance"
+      summary: "Run quality assurance (batch)"
+      description: "Call \"Get QA settings\" endpoint to get the list of enabled QA\
+        \ checks"
+      operationId: "runQaForJobPartsV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/QualityAssuranceBatchRunDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/jobs/qualityAssurances/segments/run:
+    post:
+      tags:
+      - "Quality Assurance"
+      summary: "Run quality assurance on selected segments"
+      description: "By default runs only fast running checks. Source and target language\
+        \ of jobs have to match."
+      operationId: "runQaForSegmentsV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/QualityAssuranceSegmentsRunDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/jobs/qualityAssurances/segments/{segmentId}/runWithUpdate:
+    post:
+      tags:
+      - "Quality Assurance"
+      - "Bilingual File"
+      summary: "Run quality assurance on selected segments and save segments"
+      description: "By default runs only fast running checks."
+      operationId: "runQaAndSaveV4"
+      consumes:
+      - "application/octet-stream"
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/InputStream"
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "segmentId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/jobs/qualityAssurances/settings:
+    get:
+      tags:
+      - "Quality Assurance"
+      summary: "Get QA settings for project"
+      description: "Returns enabled quality assurance checks and settings."
+      operationId: "getQaSettingsForProjectV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceChecksDtoV4"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/jobs/{jobUid}/qualityAssurances/run:
+    post:
+      tags:
+      - "Quality Assurance"
+      summary: "Run quality assurance"
+      description: "Call \"Get QA settings\" endpoint to get the list of enabled QA\
+        \ checks"
+      operationId: "runQaForJobPartV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/QualityAssuranceRunDtoV3"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceResponseDto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/jobs/{jobUid}/qualityAssurances/settings:
+    get:
+      tags:
+      - "Quality Assurance"
+      summary: "Get QA settings for job part"
+      description: "Returns enabled quality assurance checks and settings for job."
+      operationId: "getQaSettingsForJobPartV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "jobUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/QualityAssuranceChecksDtoV4"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+  /api2/v4/projects/{projectUid}/preTranslateSettings:
+    get:
+      tags:
+      - "Project"
+      summary: "Get project pre-translate settings"
+      description: ""
+      operationId: "getProjectPreTranslateSettingsV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV4Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+    put:
+      tags:
+      - "Project"
+      summary: "Update project pre-translate settings"
+      description: ""
+      operationId: "updateProjectPreTranslateSettingsV4"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectUid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/PreTranslateSettingsV4Dto"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PreTranslateSettingsV4Dto"
+        "415":
+          description: "Unsupported media type"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal server error"
+        "404":
+          description: "Resource not found"
+        "401":
+          description: "Not authorized"
+        "403":
+          description: "Forbidden"
+        "410":
+          description: "Gone"
+        "408":
+          description: "Timeout"
+        "405":
+          description: "Method not allowed"
+        "501":
+          description: "Not implemented"
+        "429":
+          description: "Too many requests"
+securityDefinitions:
+  ApiToken:
+    description: "Get a token from `auth/login` [endpoint](#operation/login) and then\
+      \ pass it in the `Authorization` HTTP header in every subsequent API call. For\
+      \ more information visit our [help center](https://support.phrase.com/hc/en-us/articles/5709662181404-API-Authentication-TMS-#token-0-0)."
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+  OAuth2:
+    description: "A standard OAuth 2.0 authorization code flow. For more information\
+      \ visit our [help center](https://support.phrase.com/hc/en-us/articles/5709662181404-API-Authentication-TMS-#oauth-2-0-0-1)."
+    type: "oauth2"
+    authorizationUrl: "https://cloud.memsource.com/web/oauth/authorize"
+    tokenUrl: "https://cloud.memsource.com/web/oauth/token"
+    flow: "accessCode"
+definitions:
+  AbsoluteTranslationLengthWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        limit:
+          type: "string"
+  CustomQAWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        message:
+          type: "string"
+        subType:
+          type: "string"
+        srcPosition:
+          $ref: "#/definitions/Position"
+        tgtPosition:
+          $ref: "#/definitions/Position"
+  EmptyPairTagsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  EmptyTagContentWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  EmptyTranslationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  EnabledCheckContextDtoV4:
+    type: "object"
+    properties:
+      moraviaProfileId:
+        type: "string"
+      customQaDisplayName:
+        type: "string"
+      provider:
+        type: "string"
+  EnabledCheckDtoV4:
+    type: "object"
+    properties:
+      checkerType:
+        type: "string"
+      context:
+        $ref: "#/definitions/EnabledCheckContextDtoV4"
+  ExtraNumbersV3WarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        number:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  ExtraNumbersWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        extraNumbers:
+          type: "array"
+          items:
+            type: "string"
+  ForbiddenStringWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        forbiddenString:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  ForbiddenTermWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        term:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+        sourceTerms:
+          type: "array"
+          items:
+            $ref: "#/definitions/Term"
+  FormattingWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  FuzzyInconsistencyWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        segmentIds:
+          type: "array"
+          items:
+            type: "string"
+  InconsistentTagContentWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  InconsistentTranslationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        segmentId:
+          type: "string"
+  InputStream:
+    type: "object"
+  JobPartSegmentsDtoV3:
+    type: "object"
+    required:
+    - "job"
+    - "segments"
+    properties:
+      job:
+        $ref: "#/definitions/UidReference"
+      segments:
+        type: "array"
+        items:
+          type: "string"
+  JoinTagsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        sourceTagsCount:
+          type: "integer"
+          format: "int32"
+        translationTagsCount:
+          type: "integer"
+          format: "int32"
+  LeadingAndTrailingSpacesWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        srcPosition:
+          $ref: "#/definitions/Position"
+        srcWhitespaces:
+          type: "string"
+        tgtPosition:
+          $ref: "#/definitions/Position"
+        tgtWhitespaces:
+          type: "string"
+        suggestion:
+          $ref: "#/definitions/Suggestion"
+  MachineTranslationSettingsDto_5:
+    type: "object"
+    properties:
+      useMachineTranslation:
+        type: "boolean"
+        description: "Pre-translate from machine translation. Default: false"
+      machineTranslationBehavior:
+        type: "string"
+        description: "Machine translation behavior. Default: APPLY_MT_ABOVE_THRESHOLD"
+        enum:
+        - "APPLY_MT_ABOVE_THRESHOLD"
+        - "COMPARE_AND_BEST_MATCH"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% machine translation suggestions. Default:\
+          \ false"
+      confirmMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for:\n                machine\
+          \ translation suggestions above `confirmMatchesThreshold`. Default: false"
+      confirmMatchesThreshold:
+        type: "number"
+        format: "double"
+        description: "Machine translation suggestions percent. Default: `1.0`"
+        minimum: 0
+        maximum: 1
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      useAltTransOnly:
+        type: "boolean"
+        description: "Do not put machine translations to target and use alt-trans\
+          \ fields (alt-trans in mxlf).\nDefault: false"
+      mtQeMatchesInEditors:
+        type: "boolean"
+        description: "Display quality-estimated machine translation suggestions in\
+          \ the CAT Editor. Default: false"
+      mtForTMAbove100:
+        type: "boolean"
+        description: "Use machine translation for segments with a TM match of 100%\
+          \ or more. Default: false"
+      mtSuggestOnlyTmBelow:
+        type: "boolean"
+        description: "Suggest MT only for segments with a TM match below. Default:\
+          \ true"
+      mtSuggestOnlyTmBelowThreshold:
+        type: "number"
+        format: "double"
+        description: "Suggest MT only for segments with a TM match below threshold.\
+          \ Default: 1.0"
+        minimum: 0
+        maximum: 1.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+    description: "Machine translation related settings"
+  MalformedWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        message:
+          type: "string"
+  MissingNonTranslatableAnnotationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        text:
+          type: "string"
+        beginIndexes:
+          type: "array"
+          items:
+            type: "integer"
+            format: "int32"
+  MissingNumbersV3WarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        number:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  MissingNumbersWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        missingNumbers:
+          type: "array"
+          items:
+            type: "string"
+  MisspelledWordDto:
+    type: "object"
+    properties:
+      word:
+        type: "string"
+      offset:
+        type: "integer"
+        format: "int32"
+  MoraviaWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        message:
+          type: "string"
+        subType:
+          type: "string"
+  MultipleSpacesV3WarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        spaces:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  MultipleSpacesWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  NestedTagsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        misplacedTargetTag:
+          type: "string"
+  NewerAtLowerLevelWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  NonConformingTermWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        term:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+        suggestedTargetTerms:
+          type: "array"
+          items:
+            $ref: "#/definitions/Term"
+  NonTranslatableSettingsDto_5:
+    type: "object"
+    properties:
+      preTranslateNonTranslatables:
+        type: "boolean"
+        description: "Pre-translate non-translatables. Default: false"
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% non-translatables.\
+          \ Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% non-translatables. Default: false"
+      nonTranslatablesInEditors:
+        type: "boolean"
+        description: "If non-translatables are enabled in Editors."
+    description: "Non-translatables related settings"
+  NotConfirmedWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  Position:
+    type: "object"
+    properties:
+      beginIndex:
+        type: "integer"
+        format: "int32"
+      endIndex:
+        type: "integer"
+        format: "int32"
+  PreTranslateSettingsV4Dto:
+    type: "object"
+    properties:
+      preTranslateOnJobCreation:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Pre-translate on job creation.\
+          \ Default: false"
+      setJobStatusCompleted:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Set job to completed once\
+          \ pre-translated. Default: false"
+      setJobStatusCompletedWhenConfirmed:
+        type: "boolean"
+        description: "Pre-translate & set job to completed when all segments confirmed:\n\
+          Set job to completed once pre-translated and all segments are confirmed.\
+          \ Default: false"
+      setProjectStatusCompleted:
+        type: "boolean"
+        description: "Pre-translate & set job to completed: Set project to completed\
+          \ once all jobs pre-translated.\n        Default: false"
+      overwriteExistingTranslations:
+        type: "boolean"
+        description: "Overwrite existing translations in target segments. Default:\
+          \ false"
+      translationMemorySettings:
+        $ref: "#/definitions/TranslationMemorySettingsDto_5"
+      machineTranslationSettings:
+        $ref: "#/definitions/MachineTranslationSettingsDto_5"
+      nonTranslatableSettings:
+        $ref: "#/definitions/NonTranslatableSettingsDto_5"
+      repetitionsSettings:
+        $ref: "#/definitions/RepetitionsSettingsDto_4"
+    description: "Pre-translate settings"
+  QualityAssuranceBatchRunDtoV3:
+    type: "object"
+    required:
+    - "jobs"
+    properties:
+      jobs:
+        type: "array"
+        items:
+          $ref: "#/definitions/UidReference"
+        maxItems: 500
+        minItems: 1
+      settings:
+        $ref: "#/definitions/QualityAssuranceRunDtoV3"
+      maxQaWarningsCount:
+        type: "integer"
+        format: "int32"
+        description: "Maximum number of QA warnings in result, default: 100. For efficiency\
+          \ reasons QA\nwarnings are processed with minimum segments chunk size 10,\
+          \ therefore slightly more warnings are returned."
+        minimum: 1
+        maximum: 1000
+  QualityAssuranceChecksDtoV4:
+    type: "object"
+    properties:
+      forbiddenStrings:
+        type: "array"
+        items:
+          type: "string"
+      enabledChecks:
+        type: "array"
+        items:
+          $ref: "#/definitions/EnabledCheckDtoV4"
+      excludeLockedSegments:
+        type: "boolean"
+      userCanSetInstantQA:
+        type: "boolean"
+      strictJobStatus:
+        type: "boolean"
+      regexpRules:
+        type: "array"
+        items:
+          $ref: "#/definitions/RegexpCheckRuleDtoV4"
+  QualityAssuranceResponseDto:
+    type: "object"
+    properties:
+      segmentWarnings:
+        type: "array"
+        items:
+          $ref: "#/definitions/SegmentWarningsDto"
+      finished:
+        type: "boolean"
+  QualityAssuranceRunDtoV3:
+    type: "object"
+    properties:
+      initialSegment:
+        $ref: "#/definitions/SegmentReference"
+      maxQaWarningsCount:
+        type: "integer"
+        format: "int32"
+        description: "Maximum number of QA warnings in result, default: 100. For efficiency\
+          \ reasons QA\nwarnings are processed with minimum segments chunk size 10,\
+          \ therefore slightly more warnings are returned."
+        minimum: 1
+        maximum: 1000
+      warningTypes:
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "EmptyTranslation"
+          - "TrailingPunctuation"
+          - "Formatting"
+          - "JoinTags"
+          - "MissingNumbersV3"
+          - "MultipleSpacesV3"
+          - "NonConformingTerm"
+          - "NotConfirmed"
+          - "TranslationLength"
+          - "AbsoluteLength"
+          - "RelativeLength"
+          - "UnresolvedComment"
+          - "EmptyPairTags"
+          - "InconsistentTranslationTargetSource"
+          - "InconsistentTranslationSourceTarget"
+          - "ForbiddenString"
+          - "SpellCheck"
+          - "RepeatedWord"
+          - "InconsistentTagContent"
+          - "EmptyTagContent"
+          - "Malformed"
+          - "ForbiddenTerm"
+          - "NewerAtLowerLevel"
+          - "LeadingAndTrailingSpaces"
+          - "LeadingSpaces"
+          - "TrailingSpaces"
+          - "TargetSourceIdentical"
+          - "SourceOrTargetRegexp"
+          - "UnmodifiedFuzzyTranslation"
+          - "UnmodifiedFuzzyTranslationTM"
+          - "UnmodifiedFuzzyTranslationMTNT"
+          - "Moravia"
+          - "ExtraNumbersV3"
+          - "UnresolvedConversation"
+          - "NestedTags"
+          - "FuzzyInconsistencyTargetSource"
+          - "FuzzyInconsistencySourceTarget"
+          - "CustomQA"
+          - "MissingNonTranslatableAnnotation"
+        maxItems: 100
+        minItems: 0
+  QualityAssuranceSegmentsRunDtoV3:
+    type: "object"
+    required:
+    - "jobsAndSegments"
+    properties:
+      jobsAndSegments:
+        type: "array"
+        items:
+          $ref: "#/definitions/JobPartSegmentsDtoV3"
+        maxItems: 100
+        minItems: 1
+      warningTypes:
+        type: "array"
+        description: "When empty only fast checks run"
+        items:
+          type: "string"
+          enum:
+          - "EmptyTranslation"
+          - "TrailingPunctuation"
+          - "Formatting"
+          - "JoinTags"
+          - "MissingNumbersV3"
+          - "MultipleSpacesV3"
+          - "NonConformingTerm"
+          - "NotConfirmed"
+          - "TranslationLength"
+          - "AbsoluteLength"
+          - "RelativeLength"
+          - "UnresolvedComment"
+          - "EmptyPairTags"
+          - "InconsistentTranslationTargetSource"
+          - "InconsistentTranslationSourceTarget"
+          - "ForbiddenString"
+          - "SpellCheck"
+          - "RepeatedWord"
+          - "InconsistentTagContent"
+          - "EmptyTagContent"
+          - "Malformed"
+          - "ForbiddenTerm"
+          - "NewerAtLowerLevel"
+          - "LeadingAndTrailingSpaces"
+          - "LeadingSpaces"
+          - "TrailingSpaces"
+          - "TargetSourceIdentical"
+          - "SourceOrTargetRegexp"
+          - "UnmodifiedFuzzyTranslation"
+          - "UnmodifiedFuzzyTranslationTM"
+          - "UnmodifiedFuzzyTranslationMTNT"
+          - "Moravia"
+          - "ExtraNumbersV3"
+          - "UnresolvedConversation"
+          - "NestedTags"
+          - "FuzzyInconsistencyTargetSource"
+          - "FuzzyInconsistencySourceTarget"
+          - "CustomQA"
+          - "MissingNonTranslatableAnnotation"
+        maxItems: 100
+        minItems: 0
+      maxQaWarningsCount:
+        type: "integer"
+        format: "int32"
+        description: "Maximum number of QA warnings in result, default: 100. For efficiency\
+          \ reasons QA\nwarnings are processed with minimum segments chunk size 10,\
+          \ therefore slightly more warnings are returned."
+        minimum: 1
+        maximum: 1000
+  RegexpCheckRuleDtoV4:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+      sourceRegexp:
+        type: "string"
+      targetRegexp:
+        type: "string"
+      id:
+        type: "string"
+      ignorable:
+        type: "boolean"
+      instant:
+        type: "boolean"
+  RelativeTranslationLengthWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        limit:
+          type: "string"
+  RepeatedWordWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        word:
+          type: "string"
+        positions:
+          type: "array"
+          items:
+            $ref: "#/definitions/Position"
+  RepeatedWordsWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        repeatedWords:
+          type: "array"
+          items:
+            type: "string"
+  RepetitionsSettingsDto_4:
+    type: "object"
+    properties:
+      autoPropagateRepetitions:
+        type: "boolean"
+        description: "Propagate repetitions. Default: false"
+      confirmRepetitions:
+        type: "boolean"
+        description: "Set segment status to confirmed for: Repetitions. Default: false"
+      autoPropagateToLockedRepetitions:
+        type: "boolean"
+        description: "Changes in 1st repetition propagate upon confirmation into subsequent\
+          \ locked repetitions. Default: false"
+      lockSubsequentRepetitions:
+        type: "boolean"
+        description: "If auto-propagated subsequent repetitions should be locked.\
+          \ Default: false"
+    description: "Repetitions related settings"
+  SegmentReference:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+  SegmentWarningDto:
+    type: "object"
+    discriminator: "type"
+    properties:
+      id:
+        type: "string"
+      ignored:
+        type: "boolean"
+      type:
+        type: "string"
+      repetitionGroupId:
+        type: "string"
+  SegmentWarningsDto:
+    type: "object"
+    properties:
+      segmentId:
+        type: "string"
+      warnings:
+        type: "array"
+        items:
+          $ref: "#/definitions/SegmentWarningDto"
+      ignoredChecks:
+        type: "array"
+        items:
+          type: "string"
+  SourceTargetRegexpWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        description:
+          type: "string"
+  SpellCheckWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        misspelledWords:
+          type: "array"
+          items:
+            $ref: "#/definitions/MisspelledWordDto"
+  Suggestion:
+    type: "object"
+    properties:
+      text:
+        type: "string"
+  TargetSourceIdenticalWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  Term:
+    type: "object"
+    properties:
+      text:
+        type: "string"
+      preferred:
+        type: "boolean"
+  TerminologyWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        missingTerms:
+          type: "array"
+          items:
+            type: "string"
+        forbiddenTerms:
+          type: "array"
+          items:
+            type: "string"
+  TrailingPunctuationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        srcPosition:
+          $ref: "#/definitions/Position"
+        srcEndPunctuation:
+          type: "string"
+        tgtPosition:
+          $ref: "#/definitions/Position"
+        tgtEndPunctuation:
+          type: "string"
+        suggestedTgtEndPunctuation:
+          type: "string"
+  TrailingSpaceWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  TranslationLengthWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  TranslationMemorySettingsDto_5:
+    type: "object"
+    properties:
+      useTranslationMemory:
+        type: "boolean"
+        description: "Pre-translate from translation memory. Default: false"
+      translationMemoryThreshold:
+        type: "number"
+        format: "double"
+        description: "Pre-translation threshold percent"
+        minimum: 0
+        maximum: 1.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      confirm100PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 100% translation memory\
+          \ matches. Default: false"
+      confirm101PercentMatches:
+        type: "boolean"
+        description: "Set segment status to confirmed for: 101% translation memory\
+          \ matches. Default: false"
+      lock100PercentMatches:
+        type: "boolean"
+        description: "Lock section: 100% translation memory matches. Default: false"
+      lock101PercentMatches:
+        type: "boolean"
+        description: "Lock section: 101% translation memory matches. Default: false"
+    description: "Translation memory related settings"
+  UidReference:
+    type: "object"
+    required:
+    - "uid"
+    properties:
+      uid:
+        type: "string"
+  UnmodifiedFuzzyTranslationMTNTWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        transOrigin:
+          type: "string"
+  UnmodifiedFuzzyTranslationTMWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        transOrigin:
+          type: "string"
+  UnmodifiedFuzzyTranslationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties:
+        transOrigin:
+          type: "string"
+  UnresolvedCommentWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}
+  UnresolvedConversationWarningDto:
+    allOf:
+    - $ref: "#/definitions/SegmentWarningDto"
+    - type: "object"
+      properties: {}

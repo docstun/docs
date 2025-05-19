@@ -5,9 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "cd docs && mintlify dev",
-    "strings:sort-spec": "node scripts/spec-sort.js -i source/phrase-strings.json -o docs/openapi/phrase-strings.json"
+    "strings:prepare": "node scripts/convert-spec.js --v3 source/phrase-strings.json -o docs/openapi/phrase-strings.json",
+    "tms:v1:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v1.yaml -o docs/openapi/phrase-tms-v1.json",
+    "tms:v2:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v2.yaml -o docs/openapi/phrase-tms-v2.json",
+    "tms:v3:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v3.yaml -o docs/openapi/phrase-tms-v3.json",
+    "tms:v4:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v4.yaml -o docs/openapi/phrase-tms-v4.json"
   },
-  "dependencies": {
+  "devDependencies": {
+    "js-yaml": "^4.1.0",
+    "swagger2openapi": "^7.0.8",
     "yargs": "^17.7.2"
   }
 }
