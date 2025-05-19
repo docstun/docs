@@ -26,7 +26,7 @@ npm run dev
 
 **Note:** Search functionality is not available in development mode.
 
-## Sorting OpenAPI Specification Paths
+### Sorting OpenAPI Specification Paths
 
 Mintlify displays paths directly from the OpenAPI specification in the order they appear in the source file.
 To sort them alphabetically, use a custom Node.js script. Example usage:
