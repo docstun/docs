@@ -1,0 +1,13 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Phrase Developer Portal",
+  "type": "module",
+  "scripts": {
+    "dev": "cd docs && mintlify dev",
+    "strings:sort-spec": "node scripts/spec-sort.js -i source/phrase-strings.json -o docs/openapi/phrase-strings.json"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
+  }
+}
