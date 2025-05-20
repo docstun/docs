@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Phrase Developer Portal",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#027361",
+    "light": "#03EAB3",
+    "dark": "#027361"
   },
   "favicon": "/assets/images/phrase-favicon.svg",
   "seo": {
@@ -19,14 +19,14 @@
         "language": "en",
         "tabs": [
           {
+            "tab": "Home",
+            "pages": [
+              "en/home"
+            ]
+          },
+          {
             "tab": "Guides",
             "groups": [
-              {
-                "group": "Home",
-                "pages": [
-                  "en/home/api-overview"
-                ]
-              },
               {
                 "group": "API Reference",
                 "pages": [
@@ -95,7 +95,8 @@
                   {
                     "group": "Overview",
                     "pages": [
-                      "en/api/tms/latest/introduction"
+                      "en/api/tms/latest/introduction",
+                      "en/api/tms/latest/authentication"
                     ]
                   },
                   {
@@ -113,7 +114,8 @@
                   {
                     "group": "Overview",
                     "pages": [
-                      "en/api/tms/all/introduction"
+                      "en/api/tms/all/introduction",
+                      "en/api/tms/all/authentication"
                     ]
                   },
                   {
@@ -131,7 +133,8 @@
                   {
                     "group": "Overview",
                     "pages": [
-                      "en/api/tms/v1/introduction"
+                      "en/api/tms/v1/introduction",
+                      "en/api/tms/v1/authentication"
                     ]
                   },
                   {
@@ -149,7 +152,8 @@
                   {
                     "group": "Overview",
                     "pages": [
-                      "en/api/tms/v2/introduction"
+                      "en/api/tms/v2/introduction",
+                      "en/api/tms/v2/authentication"
                     ]
                   },
                   {
@@ -167,7 +171,8 @@
                   {
                     "group": "Overview",
                     "pages": [
-                      "en/api/tms/v3/introduction"
+                      "en/api/tms/v3/introduction",
+                      "en/api/tms/v3/authentication"
                     ]
                   },
                   {
@@ -185,7 +190,8 @@
                   {
                     "group": "Overview",
                     "pages": [
-                      "en/api/tms/v4/introduction"
+                      "en/api/tms/v4/introduction",
+                      "en/api/tms/v4/authentication"
                     ]
                   },
                   {

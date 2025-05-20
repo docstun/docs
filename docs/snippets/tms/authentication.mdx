@@ -1,0 +1,24 @@
+---
+title: Authentication
+---
+
+## ApiToken
+
+Get a token from `auth/login` [endpoint](/en/api/tms/latest/authentication/login) and then pass it in the `Authorization` HTTP header in every subsequent API call. For more information visit our [help center](https://support.phrase.com/hc/en-us/articles/5709662181404-API-Authentication-TMS-#token-0-0).
+
+|                      |                       |
+|----------------------|-----------------------|
+| Security Scheme Type | Header Parameter Name |
+| API Key              | Authorization         |
+
+Let me know if you want to add more rows or convert it to another format (e.g. HTML or JSON).
+
+
+## OAuth2
+
+A standard OAuth 2.0 authorization code flow. For more information visit our [help center](https://support.phrase.com/hc/en-us/articles/5709662181404-API-Authentication-TMS-#oauth-2-0-0-1).
+
+|                      |                       |
+|----------------------|-----------------------|
+| Security Scheme Type |	OAuth2               |
+| authorizationCode OAuth Flow | **Authorization URL**: https://cloud.memsource.com/web/oauth/authorize <br />**Token URL**: https://cloud.memsource.com/web/oauth/token <br /> **Scopes**: |
