@@ -9,7 +9,9 @@
     "tms:v1:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v1.yaml -o docs/openapi/phrase-tms-v1.json",
     "tms:v2:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v2.yaml -o docs/openapi/phrase-tms-v2.json",
     "tms:v3:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v3.yaml -o docs/openapi/phrase-tms-v3.json",
-    "tms:v4:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v4.yaml -o docs/openapi/phrase-tms-v4.json"
+    "tms:v4:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-v4.yaml -o docs/openapi/phrase-tms-v4.json",
+    "tms:all:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-all.yaml -o docs/openapi/phrase-tms-all.json",
+    "tms:latest:prepare": "node scripts/convert-spec.js --v2 source/phrase-tms-latest.yaml -o docs/openapi/phrase-tms-latest.json"
   },
   "devDependencies": {
     "js-yaml": "^4.1.0",

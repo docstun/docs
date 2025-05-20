@@ -90,6 +90,42 @@
             "tab": "TMS API",
             "versions": [
               {
+                "version": "Latest",
+                "groups": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "en/api/tms/latest/introduction"
+                    ]
+                  },
+                  {
+                    "group": "API Documentation",
+                    "openapi": {
+                      "source": "openapi/phrase-tms-latest.json",
+                      "directory": "en/api/tms/latest"
+                    }
+                  }
+                ]
+              },
+              {
+                "version": "All",
+                "groups": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "en/api/tms/all/introduction"
+                    ]
+                  },
+                  {
+                    "group": "API Documentation",
+                    "openapi": {
+                      "source": "openapi/phrase-tms-all.json",
+                      "directory": "en/api/tms/all"
+                    }
+                  }
+                ]
+              },
+              {
                 "version": "V1",
                 "groups": [
                   {
