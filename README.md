@@ -16,9 +16,15 @@ Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview do
 npm i -g mintlify
 ```
 
+Install project dependencies:
+
+```
+npm install
+```
+
 ### Starting the Development Server
 
-To start the development server, run the following NPM command from the root of your documentation project:
+To start the development server, run the following command from the root of your documentation project:
 
 ```
 npm run dev
@@ -26,11 +32,18 @@ npm run dev
 
 **Note:** Search functionality is not available in development mode.
 
-### Sorting OpenAPI Specification Paths
+### Sorting and converting OpenAPI Specification
 
 Mintlify displays paths directly from the OpenAPI specification in the order they appear in the source file.
-To sort them alphabetically, use a custom Node.js script. Example usage:
+To sort them alphabetically, use the custom Node.js script. Example usage:
 
 ```
-node scripts/spec-sort.js -i source.json -o output.json
+node scripts/convert-spec.js --v3 open-api-source.json -o output.json
+```
+
+If you're using an OpenAPI specification in version 2 (Swagger - YAML or JSON), use the `--v2` flag.
+The file will be converted to version 3 and sorted automatically. Example usage:
+
+```
+node scripts/convert-spec.js --v2 swagger.json -o output.json
 ```

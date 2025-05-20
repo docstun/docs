@@ -1,22 +1,28 @@
-// To run the script, use the following command:
-// node scripts/spec-sort.js -i path/to/input.json -o path/to/output.json
-
 import fs from 'fs';
 import path from 'path';
-import yargs from 'yargs/yargs';
-import { hideBin } from 'yargs/helpers';
-import { promisify } from 'util';
+import yaml from 'js-yaml';
 import { exit } from 'process';
+import yargs from 'yargs/yargs';
+import { promisify } from 'util';
+import { hideBin } from 'yargs/helpers';
+import swagger2openapi from 'swagger2openapi';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const convertSwagger = promisify(swagger2openapi.convertObj);
 
 const argv = yargs(hideBin(process.argv))
-  .option('input', {
+  .option('v3', {
     alias: 'i',
     type: 'string',
     description: 'Path to the input OpenAPI JSON file',
-    demandOption: true,
+    demandOption: false,
+  })
+  .option('v2', {
+    alias: 's',
+    type: 'string',
+    description: 'Path to the input Swagger v2 YAML file to convert to OpenAPI v3',
+    demandOption: false,
   })
   .option('output', {
     alias: 'o',
@@ -24,9 +30,17 @@ const argv = yargs(hideBin(process.argv))
     description: 'Path to the output OpenAPI JSON file',
     demandOption: true,
   })
+  .check((argv) => {
+    if (!argv.v3 && !argv.v2) {
+      throw new Error('Either --v3 or --v2 must be provided');
+    }
+    if (argv.v3 && argv.v2) {
+      throw new Error('Only one of --v3 or --v2 should be provided, not both');
+    }
+    return true;
+  })
   .parse();
 
-const inputPath = path.resolve(argv.input);
 const outputPath = path.resolve(argv.output);
 
 const isValidJson = (json) => {
@@ -47,17 +61,6 @@ const isValidJson = (json) => {
  * @param {Array} paths[path][method].tags - Array of tags for the method
  * 
  * @returns {Object} A new object with the same paths but sorted by their first tag alphabetically
- * 
- * @example
- * const sortedPaths = sortPaths({
- *   '/users': {
- *     'get': { tags: ['Users'] }
- *   },
- *   '/products': {
- *     'get': { tags: ['Products'] }
- *   }
- * });
- * // Returns paths sorted with 'Products' before 'Users'
  */
 const sortPaths = (paths) => {
   const sortedPaths = {};
@@ -82,18 +85,48 @@ const sortPaths = (paths) => {
 
 const main = async () => {
   try {
-    const data = await readFile(inputPath, 'utf8');
-    if (!isValidJson(data)) {
-      console.error('Invalid JSON format');
-      exit(1);
+    let jsonData;
+
+    if (argv.v2) {
+      const swaggerPath = path.resolve(argv.v2);
+      console.log(`Converting Swagger v2 from ${swaggerPath} to OpenAPI v3...`);
+      
+      // Handle both YAML and JSON for swagger input
+      const fileContent = await readFile(swaggerPath, 'utf8');
+      
+      // Try to parse as YAML first, fallback to JSON if it fails
+      let swaggerContent;
+      try {
+        swaggerContent = yaml.load(fileContent);
+      } catch (e) {
+        // If YAML parsing fails, try JSON
+        try {
+          swaggerContent = JSON.parse(fileContent);
+        } catch (jsonError) {
+          throw new Error('Failed to parse file as YAML or JSON');
+        }
+      }
+      const options = { patch: true, warnOnly: true };
+      
+      // Convert Swagger v2 to OpenAPI v3
+      const converted = await convertSwagger(swaggerContent, options);
+      jsonData = converted.openapi;
+    } else {
+      const inputPath = path.resolve(argv.v3);
+      const data = await readFile(inputPath, 'utf8');
+      if (!isValidJson(data)) {
+        console.error('Invalid JSON format');
+        exit(1);
+      }
+      jsonData = JSON.parse(data);
     }
 
-    const jsonData = JSON.parse(data);
     if (!jsonData.paths) {
-      console.error('No paths found in the OpenAPI JSON file');
+      console.error('No paths found in the API spec');
       exit(1);
     }
 
+    console.log('Sorting paths by tags...');
     jsonData.paths = sortPaths(jsonData.paths);
     await writeFile(outputPath, JSON.stringify(jsonData, null, 2));
 
@@ -105,4 +138,3 @@ const main = async () => {
 };
 
 main();
-
