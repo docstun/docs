@@ -56,10 +56,10 @@
               {
                 "group": "Guides",
                 "pages": [
-                  "en/guides/general",
                   "en/guides/phrase-strings",
                   "en/guides/phrase-tms",
-                  "en/guides/build-an-integration-with-phrase"
+                  "en/guides/phrase-language-ai",
+                  "en/guides/phrase-idm"
                 ]
               }
             ]

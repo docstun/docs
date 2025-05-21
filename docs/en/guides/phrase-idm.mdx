@@ -1,0 +1,91 @@
+---
+title: Phrase IDM
+---
+
+Phrase Identity Management (IDM) provides a centralized system for managing user access across the Phrase Localization Platform, enabling a single login experience for all integrated Phrase products. This guide details the technical architecture, authentication mechanisms, user provisioning, and integration points relevant for developers and IT administrators.
+
+## Core Architecture & Access
+
+Phrase IDM facilitates unified access to Phrase products (TMS, Strings, Orchestrator, Custom AI, Language AI, Analytics) via a single platform dashboard. Users access the platform using data center-specific URLs:
+*   **EU Data Center**: `https://eu.phrase.com`
+*   **US Data Center**: `https://us.phrase.com`
+
+Once logged in, users can switch between subscribed products and organizations they are members of directly from their user profile.
+
+**Key Principles**:
+*   **Single Login**: Authenticate once to access all subscribed Phrase products.
+*   **Centralized User Management**: Manage user identities and access from a unified point.
+*   **Product Access Control**: Access to specific Phrase products is determined by the organization's purchased plan and user roles/invitations within those products. For instance, Phrase Custom AI, Language AI, and Analytics require access to TMS and an Administrator or Project Manager role within TMS.
+
+## Authentication Mechanisms
+
+Phrase IDM supports several methods for user authentication:
+
+### 1. Username and Password
+Users can sign up or log in using standard credentials. If a user has multiple Phrase accounts, using the username instead of the email address is recommended during login. A password reset flow is available.
+
+### 2. Social Login
+Users can sign up or log in using existing accounts from:
+*   Microsoft
+*   GitHub
+
+Legacy TMS or Strings social accounts are also supported for logging into the Phrase Platform. Users can manage their social provider connections in their profile settings. Social signup or login is not available for users directly invited to an organization; they must first set a password and then can enable social login via their profile settings.
+
+### 3. Single Sign-On (SSO)
+SSO allows users to authenticate via third-party Identity Providers (IdPs). Phrase IDM supports IdPs compliant with **SAML 2.0** and **SCIM 2.0** protocols, such as Microsoft Entra ID, Okta, and Google Workspace.
+
+**SSO Configuration Highlights**:
+*   **Admin Access Required**: SSO setup must be performed by IT administrators with admin access to the chosen IdP.
+*   **Unique Global Identifier**: Organizations must define a unique identifier (e.g., organization name). This identifier is used during the SSO login process and can be pre-filled using the `uniqueId` URL parameter (e.g., `https://eu.phrase.com/login?uniqueId=your-org-identifier`).
+*   **Identifier Type**: User matching between Phrase and the IdP can be based on:
+    *   **Username**: Uses `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified` `NameID` format attribute.
+    *   **Email**: Uses `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` `NameID` format attribute.
+*   **SAML Response Signing**: Signing the SAML response by the IdP is mandatory for a successful SSO setup.
+*   **Enforced SSO**: Organizations can enforce SSO, restricting login via username/password. An option to `Allow login with username and password` is available for external collaborators who may need access outside of SSO.
+*   **Email Address Changes**: The platform does not support changing email addresses for identities using SSO Login.
+
+## User Provisioning
+
+Phrase IDM supports two primary methods for automated user provisioning for company-managed users (not self-registered users) via SAML/SSO. Note that SAML auto-provisioning (JIT) and SCIM cannot be enabled simultaneously. Enabling these features requires collaboration with Phrase Technical Support.
+
+### 1. Just-in-Time (JIT) Provisioning
+JIT is a SAML-based method that automatically creates a user account in the Phrase organization the first time they log in via SSO.
+*   **Automatic Access**: Created users gain automatic access to that organization's products.
+*   **No Manual Creation**: Eliminates the need for manual user account creation in Phrase.
+*   **Binding Confirmation**: New users receive an email with a verification link to confirm their binding to the organization. This step is required before the user can log in with SSO, but can be skipped by contacting your dedicated Customer Success Manager.
+*   **Credential Management**: Credentials for JIT provisioned users are managed in the IdP; they cannot change their Phrase credentials.
+*   **Attribute Mapping**: Requires mapping attributes from the IdP to Phrase user data fields to ensure alignment.
+*   **Activation**: Contact Phrase support to enable the configuration settings for JIT.
+
+### 2. SCIM (System for Cross-domain Identity Management) Provisioning
+SCIM is an application-level protocol for automating the exchange of user identity information.
+*   **Supported SCIM Functionality**:
+    *   **Create Company-Managed User**: Provisions users to all active applications in their Platform organization. By default, users get the Linguist role in Phrase TMS and Translator role in Phrase Strings. SCIM only supports fresh identities; existing ones cannot be merged.
+    *   **Edit Company-Managed User Attributes**: Changes made in the IdP are reflected in the Phrase Platform.
+    *   **Delete Company-Managed User**: Deactivates or removes users in Phrase when they are de-provisioned in the IdP. If a user is a member of multiple organizations, a deletion request from one organization removes their membership from that specific organization; full platform removal occurs only after receiving a deletion request from the last organization they are a member of.
+*   **Configuration**:
+    *   Requires contacting Phrase support to enable SCIM configuration settings.
+    *   An **Organization ID** provided by Phrase is needed for encoding in the security token (due to the multi-tenant architecture).
+    *   A unique **SCIM token** and the **SCIM Base URL** are generated by Phrase and used in the IdP settings.
+
+**Best Practices for Auto-Provisioning (JIT & SCIM)**:
+*   **Test**: Start with a small group of users to verify functionality.
+*   **Assign via IdP**: Assign all relevant users to the Phrase application in the IdP.
+*   **Convert Existing Users**: Contact Phrase Technical Support to convert current users to "company-managed." SCIM can only manage these users.
+*   **Assign Pre-SCIM Users**: Users added before enabling SCIM must be assigned to the organization via the IdP to prevent accidental deletion during synchronization.
+
+## Migration to Platform SSO
+
+As of **March 4, 2025**, the legacy SSO login pages for Phrase TMS and Phrase Strings are deprecated. Organizations using legacy SSO must migrate to Platform SSO to ensure uninterrupted access.
+
+**Migration Steps**:
+1.  **Set up Platform SSO in IdP**: Configure a new Platform SSO integration in your IdP (e.g., Okta, Azure).
+2.  **Match Unique Identifier**: Use the same globally unique identifier in Platform SSO as was used in the legacy SSO to avoid user confusion.
+3.  **Invite Users**: Invite existing users and groups from the legacy SSO integration to the new Platform SSO integration within the IdP.
+4.  **Communicate Changes**: Inform users about the new login flow:
+    *   Use platform login pages: `https://eu.phrase.com` or `https://us.phrase.com`.
+    *   Update IdP dashboard icons if applicable to point to the new Platform SSO.
+    *   User credentials (email/username) remain unchanged.
+5.  **Content Preservation**: All existing content and user roles in Phrase TMS and Phrase Strings remain unchanged post-migration.
+
+Each Phrase organization can integrate with only one IdP for Platform SSO. If multiple IdPs are currently in use, one must be selected for the Platform SSO setup before migration.

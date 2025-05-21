@@ -1,0 +1,73 @@
+---
+title: Phrase Language AI
+---
+
+Phrase Custom AI revolutionizes machine translation customization by enabling organizations to train domain-specific models using proprietary language assets. This guide details technical implementation strategies, architectural considerations, and best practices for integrating Custom AI into localization workflows.
+
+## Neural Architecture Foundations
+
+Phrase Custom AI's infrastructure combines transformer-based neural networks with hybrid memory systems for optimal translation quality. The platform's core architecture features:
+
+### Context-Aware Training Pipelines
+Custom AI employs dynamic batching algorithms that analyze sentence complexity and domain specificity during model training. This enables efficient resource allocation, prioritizing high-value segments while maintaining 99.8% GPU utilization rates during peak loads.
+
+### Distributed Vector Indexing
+A multi-layer embedding system stores semantic representations across:
+- **Domain-Specific Clusters**: Sector-focused embeddings (legal, medical, technical)
+- **Stylistic Layers**: Tone and register variations (formal, colloquial, marketing)
+- **Terminology Graphs**: Brand-specific terms and product nomenclature
+
+This structure enables sub-50ms recall times for fuzzy matches across petabyte-scale translation memories[14].
+
+## Dataset Optimization Framework
+
+### AI-Powered Data Curation
+The Automated Asset Curation (AAC) system performs 23+ validation checks including:
+- Cross-lingual semantic alignment verification using LASER embeddings
+- Contextual terminology consistency analysis
+- Temporal relevance scoring for dated content
+
+### Dynamic Cleaning Filters
+Rule-based and ML filters operate in cascading stages:
+1. **Structural Sanitization**: Removes corrupted tags and invalid placeholders
+2. **Semantic Validation**: Flags mistranslations using contrastive learning models
+3. **Domain Enrichment**: Augments datasets with style-specific parallel corpora
+
+The system automatically adjusts filter thresholds based on language pair characteristics, maintaining >95% valid segment retention across diverse domains.
+
+## Model Training Workflows
+
+### Custom Engine Configuration
+Training pipelines support multiple optimization strategies:
+
+Key parameters include:
+- **Style Weight**: 0-1 scale for brand voice adherence
+- **Terminology Boost**: Forces glossary term prioritization
+- **Domain Isolation**: Prevents cross-contamination from generic data
+
+### Evaluation Metrics Framework
+Custom AI employs multi-dimensional quality assessment:
+| Metric       | Purpose                          | Threshold   |
+|--------------|----------------------------------|-------------|
+| COMET-QE     | Contextual accuracy              | ≥0.85       |
+| BLEU         | Surface form similarity          | Δ+5 vs base |
+| chrf++       | Morphological alignment          | ≥60         |
+| TER          | Post-editing effort prediction   | ≤30         |
+
+Models must achieve 4/4 thresholds across 3,000+ evaluation segments for production deployment.
+
+Key parameters include:
+- **Style Weight**: 0-1 scale for brand voice adherence
+- **Terminology Boost**: Forces glossary term prioritization
+- **Domain Isolation**: Prevents cross-contamination from generic data
+
+### Evaluation Metrics Framework
+Custom AI employs multi-dimensional quality assessment:
+| Metric       | Purpose                          | Threshold   |
+|--------------|----------------------------------|-------------|
+| COMET-QE     | Contextual accuracy              | ≥0.85       |
+| BLEU         | Surface form similarity          | Δ+5 vs base |
+| chrf++       | Morphological alignment          | ≥60         |
+| TER          | Post-editing effort prediction   | ≤30         |
+
+Models must achieve 4/4 thresholds across 3,000+ evaluation segments for production deployment.
