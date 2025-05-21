@@ -49,6 +49,7 @@ table td {
   padding: 2rem 4rem;
   gap: 1rem;
   height: 400px;
+  background-image: url('/public/assets/images/hero.png.webp');
   background-color: var(--color-hero-background);
   background-repeat: no-repeat;
   background-position-x: 40%;

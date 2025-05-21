@@ -7,7 +7,7 @@
     "light": "#03EAB3",
     "dark": "#027361"
   },
-  "favicon": "/assets/images/phrase-favicon.svg",
+  "favicon": "/public/assets/images/phrase-favicon.svg",
   "seo": {
     "metatags": {
       "robots": "noindex"
@@ -209,8 +209,8 @@
     ]
   },
   "logo": {
-    "light": "/assets/images/phrase-logo-light.svg",
-    "dark": "/assets/images/phrase-logo-dark.svg"
+    "light": "/public/assets/images/phrase-logo-light.svg",
+    "dark": "/public/assets/images/phrase-logo-dark.svg"
   },
   "navbar": {
     "links": [
