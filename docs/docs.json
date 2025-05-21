@@ -203,6 +203,24 @@
                 ]
               }
             ]
+          },
+          {
+            "tab": "Bifrost API",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "en/api/bifrost/introduction"
+                ]
+              },
+              {
+                "group": "API Documentation",
+                "openapi": {
+                  "source": "openapi/phrase-bifrost.json",
+                  "directory": "en/api/bifrost"
+                }
+              }
+            ]
           }
         ]
       }

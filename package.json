@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cd docs && mintlify dev",
     "prepare:strings": "node scripts/convert-spec.js --v3 source/phrase-strings.json -o docs/openapi/phrase-strings.json",
+    "prepare:bifrost": "node scripts/convert-spec.js --v3 source/phrase-bifrost.json -o docs/openapi/phrase-bifrost.json",
     "prepare:tms:v1": "node scripts/convert-spec.js --v2 source/phrase-tms-v1.yaml -o docs/openapi/phrase-tms-v1.json",
     "prepare:tms:v2": "node scripts/convert-spec.js --v2 source/phrase-tms-v2.yaml -o docs/openapi/phrase-tms-v2.json",
     "prepare:tms:v3": "node scripts/convert-spec.js --v2 source/phrase-tms-v3.yaml -o docs/openapi/phrase-tms-v3.json",
