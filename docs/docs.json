@@ -203,6 +203,42 @@
                 ]
               }
             ]
+          },
+          {
+            "tab": "Language AI API",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "en/api/language-ai/introduction"
+                ]
+              },
+              {
+                "group": "API Documentation",
+                "openapi": {
+                  "source": "openapi/phrase-language-ai.json",
+                  "directory": "en/api/language-ai"
+                }
+              }
+            ]
+          },
+          {
+            "tab": "IDM API",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "en/api/idm/introduction"
+                ]
+              },
+              {
+                "group": "API Documentation",
+                "openapi": {
+                  "source": "openapi/phrase-idm.json",
+                  "directory": "en/api/idm"
+                }
+              }
+            ]
           }
         ]
       }

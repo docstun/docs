@@ -1,0 +1,1451 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Phrase Language AI via API",
+    "description": "### Machine translation powered by [Phrase](https://phrase.com) allows the translation of content utilizing  a unique AI powered feature to pick the best available translation engine for that content.\n",
+    "version": "1.0.0",
+    "termsOfService": "https://phrase.com/terms/",
+    "contact": {
+      "url": "https://phrase.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://eu.phrase.com/smt/api/",
+      "description": "The API server for EU data center."
+    },
+    {
+      "url": "https://us.phrase.com/smt/api/",
+      "description": "The API server for US data center."
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "File translations",
+      "description": "Allows the processing files asynchronously with the file being uploaded and stored in Phrase.  Files can be either stored or translated by the best available MT engine. File TTL is limited to 24 hours  after which the file is deleted from storage."
+    },
+    {
+      "name": "Authentication",
+      "description": "Allows the authentication of a user and to get the token to be used in the Authorization header.\n"
+    },
+    {
+      "name": "Text translations",
+      "description": "Allows the translation of text content utilizing Phrase Language AI capabilities. APIs are synchronous, \ndesigned for quick turnaround and are limited in size of the request.\n"
+    }
+  ],
+  "paths": {
+    "/v1/textTranslations": {
+      "summary": "Text translations",
+      "post": {
+        "tags": [
+          "Text translations"
+        ],
+        "operationId": "postTextTranslationsV1",
+        "summary": "Text translations",
+        "description": "Translates the text content utilizing Phrase Language AI capabilities. Can identify the source language, if \nnot provided, and translate the text to the target language. If language identification is requested, system\nneeds to have at least 50 characters.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextTranslationsRequestV1"
+              },
+              "examples": {
+                "withSourceLang": {
+                  "summary": "Example request with source language",
+                  "value": {
+                    "sourceLang": {
+                      "code": "en"
+                    },
+                    "sourceText": "Hello, world!",
+                    "targetLang": {
+                      "code": "cs"
+                    },
+                    "mtSettings": {
+                      "profile": {
+                        "uid": "CFUki8ptanoz1WAIYoXSH4"
+                      }
+                    }
+                  }
+                },
+                "withoutSourceLang": {
+                  "summary": "Example request without source language.",
+                  "value": {
+                    "sourceText": "Hello, world! This is a test sentence to ensure it has more than fifty characters.",
+                    "targetLang": {
+                      "code": "cs"
+                    },
+                    "mtSettings": {
+                      "profile": {
+                        "uid": "CFUki8ptanoz1WAIYoXSH4"
+                      }
+                    }
+                  }
+                },
+                "withoutProfile": {
+                  "summary": "Example request without custom profile.",
+                  "value": {
+                    "sourceText": "Hello, world!",
+                    "sourceLang": {
+                      "code": "en"
+                    },
+                    "targetLang": {
+                      "code": "cs"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response with translations",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextTranslationsResponseV1"
+                },
+                "examples": {
+                  "happyTranslation": {
+                    "summary": "Sample translation",
+                    "value": {
+                      "sourceLang": {
+                        "code": "en"
+                      },
+                      "translatedText": "Ahoj, světe!",
+                      "targetLang": {
+                        "code": "cs"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          }
+        }
+      }
+    },
+    "/v2/textTranslations": {
+      "summary": "Text translations v2",
+      "post": {
+        "tags": [
+          "Text translations"
+        ],
+        "operationId": "postTextTranslationsV2",
+        "summary": "Text translations v2",
+        "description": "Translates the text content utilizing Phrase Language AI capabilities. Can identify the source language, if \nnot provided, and translate the text to the target language. If language identification is requested, system\nneeds to have at least 50 characters.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextTranslationsRequestV2"
+              },
+              "examples": {
+                "withSourceLang": {
+                  "summary": "Example request with source language",
+                  "value": {
+                    "sourceLang": {
+                      "code": "en"
+                    },
+                    "sourceTexts": [
+                      {
+                        "key": "key1",
+                        "source": "Hello, world!"
+                      }
+                    ],
+                    "targetLang": {
+                      "code": "cs"
+                    },
+                    "mtSettings": {
+                      "profile": {
+                        "uid": "CFUki8ptanoz1WAIYoXSH4"
+                      }
+                    },
+                    "consumerId": "consumer1"
+                  }
+                },
+                "withoutSourceLang": {
+                  "summary": "Example request without source language.",
+                  "value": {
+                    "sourceTexts": [
+                      {
+                        "key": "key1",
+                        "source": "Hello, world! This is a test sentence to ensure it has more than fifty characters."
+                      }
+                    ],
+                    "targetLang": {
+                      "code": "cs"
+                    },
+                    "mtSettings": {
+                      "profile": {
+                        "uid": "CFUki8ptanoz1WAIYoXSH4"
+                      }
+                    },
+                    "consumerId": "consumer1"
+                  }
+                },
+                "withoutProfile": {
+                  "summary": "Example request without custom profile.",
+                  "value": {
+                    "sourceTexts": [
+                      {
+                        "key": "key1",
+                        "source": "Hello, world!"
+                      }
+                    ],
+                    "sourceLang": {
+                      "code": "en"
+                    },
+                    "targetLang": {
+                      "code": "cs"
+                    },
+                    "consumerId": "consumer1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response with translations",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextTranslationsResponseV2"
+                },
+                "examples": {
+                  "happyTranslation": {
+                    "summary": "Sample translation",
+                    "value": {
+                      "sourceLang": {
+                        "code": "en"
+                      },
+                      "translatedTexts": [
+                        {
+                          "key": "key1",
+                          "target": "Ahoj, světe!"
+                        }
+                      ],
+                      "targetLang": {
+                        "code": "cs"
+                      },
+                      "consumerId": "consumer1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          }
+        }
+      }
+    },
+    "/v1/fileTranslations": {
+      "summary": "File processing",
+      "post": {
+        "tags": [
+          "File translations"
+        ],
+        "operationId": "postFileTranslationsV1",
+        "summary": "File translations",
+        "description": "Creates a new file translations request based on multipart/form-data. The translation state can be fetched \nutilizing a returned UID in the response and a [Metadata](#operation/getMetadataV1) endpoint. It is also \npossible to download the translated file using the [Get file](#operation/getFilesV1) endpoint once the \ntranslation is complete (`action.status == OK`). \n",
+        "requestBody": {
+          "description": "Source file with the metadata used for the translation process. \nMultipart request with `metadata` and `file` parts.\nMetadata accepts the following `actionTypes`:\n\n<table style=\"font-size: .8rem; font-family: Roboto, sans-serif;\">\n  <thead>\n    <th>Action Type</th>\n    <th>Description</th>\n  </thead>\n  <tbody>\n    <tr>\n      <td>FILE_IMPORT</td>\n      <td>Imports the file into the system</td>\n    </tr>\n    <tr>\n     <td>CONVERTER_IMPORT</td>\n     <td>Extracts the translatable texts out of the file</td>\n    </tr>\n    <tr>\n      <td>MT_GENERIC_PRETRANSLATE</td>\n      <td>Translates the extracted text</td>\n    </tr>\n    <tr>\n      <td>QUALITY_ESTIMATION</td>\n      <td>Returns Phrase Quality Performance Score (QPS)</td>\n    </tr>\n  </tbody>\n</table>\n\nNote that only action type `MT_GENERIC_PRETRANSLATE` is needed when user wants to translate the \nfile. Or only action type `QUALITY_ESTIMATION` is needed when user wants to translate the file and\nto get the quality estimation\n",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metadata": {
+                    "$ref": "#/components/schemas/FileTranslationsMetadataV1"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "x-constraints": "@ValidFileFormat"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "file"
+                ]
+              },
+              "examples": {
+                "translation-request": {
+                  "value": "--Boundary_1_1453803947_1691603987728\nContent-Type: application/octet-stream\nContent-Disposition: form-data; name=\"file\"; filename=\"test.txt\"\nText for translation\n\n--Boundary_1_1453803947_1691603987728\nContent-Type: application/json\nContent-Disposition: form-data; name=\"metadata\"\n\n{\"sourceLang\":{\"code\":\"en\"},\"targetLangs\":[{\"code\":\"cs\"}],\"actionTypes\":[\"MT_GENERIC_PRETRANSLATE\"],\"callbackUrl\":\"https://your-server.com/send/data/here\"}\n--Boundary_1_1453803947_1691603987728--\n"
+                },
+                "storage-request": {
+                  "value": "--Boundary_1_1453803947_1691603987728\nContent-Type: application/octet-stream\nContent-Disposition: form-data; name=\"file\"; filename=\"test.txt\"\nText for translation\n\n--Boundary_1_1453803947_1691603987728\nContent-Type: application/json\nContent-Disposition: form-data; name=\"metadata\"\n\n{\"sourceLang\":{\"code\":\"en\"},\"targetLangs\":[{\"code\":\"cs\"}],\"actionTypes\":[\"FILE_IMPORT\"],\"callbackUrl\":\"https://your-server.com/send/data/here\"}\n--Boundary_1_1453803947_1691603987728--\n"
+                }
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "application/octet-stream"
+                },
+                "metadata": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response with UID of the file translations request.",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileTranslationsResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Tms403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Tms404"
+          },
+          "405": {
+            "$ref": "#/components/responses/Tms405"
+          },
+          "408": {
+            "$ref": "#/components/responses/Tms408"
+          },
+          "410": {
+            "$ref": "#/components/responses/Tms410"
+          },
+          "415": {
+            "$ref": "#/components/responses/Tms415"
+          },
+          "429": {
+            "$ref": "#/components/responses/Tms429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Tms500"
+          },
+          "501": {
+            "$ref": "#/components/responses/Tms501"
+          }
+        },
+        "callbacks": {
+          "translationsFinished": {
+            "{$request.body#/metadata/callbackUrl}": {
+              "post": {
+                "summary": "File Translations Callback",
+                "description": "Callback response with UID of the file translations operation and status describing how operation finished.",
+                "operationId": "sendUidV1",
+                "requestBody": {
+                  "required": true,
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/FileTranslationsResponseV1"
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Your server should return this HTTP status code if the request was received successfully."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fileTranslations/{uid}/{actionType}/{language}": {
+      "get": {
+        "summary": "Action result",
+        "description": "Use the Accept header with either `application/octet-stream` to get the file or use `application/json` to get the quality estimation.",
+        "tags": [
+          "File translations"
+        ],
+        "operationId": "getFilesV1",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Accept"
+          },
+          {
+            "in": "path",
+            "name": "uid",
+            "description": "UID of the operation. See [File translations](#operation/postFileTranslationsV1) endpoint.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "actionType",
+            "description": "File associated with the specified action type will be returned, if the action was completed.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ActionTypeEnumV1"
+            }
+          },
+          {
+            "in": "path",
+            "name": "language",
+            "description": "Requested language of the file. Please note different actions have different languages available.",
+            "required": true,
+            "x-constraints": "@ValidLocale",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Action result has been successfully returned.",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              },
+              "Content-Type": {
+                "$ref": "#/components/headers/ContentType"
+              }
+            },
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "metadata": {
+                      "$ref": "#/components/schemas/FileTranslationsMetadataV1"
+                    },
+                    "file": {
+                      "description": "The file data.",
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "required": [
+                    "metadata",
+                    "file"
+                  ]
+                },
+                "examples": {
+                  "translated-file": {
+                    "value": "--Boundary_1_1453803947_1691603987728\nContent-Type: application/octet-stream\nContent-Disposition: form-data; name=\"file\"; filename=\"test.txt\"\nPřeložený text\n\n--Boundary_1_1453803947_1691603987728\nContent-Type: application/json\nContent-Disposition: form-data; name=\"metadata\"\n\n{\"sourceLang\":{\"code\":\"en\"},\"targetLangs\":[{\"code\":\"cs\"}],\"actionTypes\":[\"MT_GENERIC_PRETRANSLATE\"],\"callbackUrl\":\"https://your-server.com/send/data/here\"}\n--Boundary_1_1453803947_1691603987728--\n"
+                  }
+                },
+                "encoding": {
+                  "metadata": {
+                    "contentType": "application/json"
+                  },
+                  "file": {
+                    "contentType": "application/octet-stream"
+                  }
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                },
+                "examples": {
+                  "translated-file": {
+                    "value": "Přeložený text\n"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEstimationResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Tms403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Tms404"
+          },
+          "405": {
+            "$ref": "#/components/responses/Tms405"
+          },
+          "408": {
+            "$ref": "#/components/responses/Tms408"
+          },
+          "410": {
+            "$ref": "#/components/responses/Tms410"
+          },
+          "415": {
+            "$ref": "#/components/responses/Tms415"
+          },
+          "429": {
+            "$ref": "#/components/responses/Tms429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Tms500"
+          },
+          "501": {
+            "$ref": "#/components/responses/Tms501"
+          }
+        }
+      }
+    },
+    "/v1/fileTranslations/{uid}": {
+      "get": {
+        "summary": "File processing metadata",
+        "description": "Allows the fetching of metadata from the processing file. The completed file can be \ndownloaded using the [File download](#operation/getFilesV1) endpoint.\n",
+        "tags": [
+          "File translations"
+        ],
+        "operationId": "getMetadataV1",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uid",
+            "description": "UID of the operation. See [File translations](#operation/postFileTranslationsV1) endpoint.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns metadata of previously created translation request by requests unique identifier.",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileTranslationsResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Tms403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Tms404"
+          },
+          "405": {
+            "$ref": "#/components/responses/Tms405"
+          },
+          "408": {
+            "$ref": "#/components/responses/Tms408"
+          },
+          "410": {
+            "$ref": "#/components/responses/Tms410"
+          },
+          "415": {
+            "$ref": "#/components/responses/Tms415"
+          },
+          "429": {
+            "$ref": "#/components/responses/Tms429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Tms500"
+          },
+          "501": {
+            "$ref": "#/components/responses/Tms501"
+          }
+        }
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "security": [],
+        "summary": "Login",
+        "description": "Returns information about the user with the token to be used in the Authorization header and its expiration date.",
+        "operationId": "loginV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestV1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login.",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Tms403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Tms404"
+          },
+          "405": {
+            "$ref": "#/components/responses/Tms405"
+          },
+          "408": {
+            "$ref": "#/components/responses/Tms408"
+          },
+          "410": {
+            "$ref": "#/components/responses/Tms410"
+          },
+          "415": {
+            "$ref": "#/components/responses/Tms415"
+          },
+          "429": {
+            "$ref": "#/components/responses/Tms429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Tms500"
+          },
+          "501": {
+            "$ref": "#/components/responses/Tms501"
+          }
+        }
+      }
+    },
+    "/v1/translationProfiles": {
+      "get": {
+        "summary": "List Language AI Profiles",
+        "description": "List available Language AI profiles for the user.",
+        "tags": [
+          "List Language AI Profiles"
+        ],
+        "operationId": "listTranslationProfilesV1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter by name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "name",
+              "enum": [
+                "name",
+                "dateCreated"
+              ]
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "desc",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Page number, starting with 0, default 0",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size, accepts values between 1 and 50, default 10",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "headers": {
+              "Memsource-Action-Id": {
+                "$ref": "#/components/headers/MemsourceActionId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListTranslationProfilesResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Tms400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Tms401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Tms403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Tms404"
+          },
+          "405": {
+            "$ref": "#/components/responses/Tms405"
+          },
+          "408": {
+            "$ref": "#/components/responses/Tms408"
+          },
+          "410": {
+            "$ref": "#/components/responses/Tms410"
+          },
+          "415": {
+            "$ref": "#/components/responses/Tms415"
+          },
+          "429": {
+            "$ref": "#/components/responses/Tms429"
+          },
+          "500": {
+            "$ref": "#/components/responses/Tms500"
+          },
+          "501": {
+            "$ref": "#/components/responses/Tms501"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Provide `Authorization` header with token obtained through [Login](#operation/loginV1) operation."
+      }
+    },
+    "schemas": {
+      "LanguageV1": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Language code, using a two-letter language code from ISO 639-1, e.g., `cs`.  Optionally, a region subtag based on a two-letter country code from ISO 3166-1 alpha-2,  e.g., `cs_cz`, or a three-digit code from UN M.49, e.g., `es_419`, separated by an underscore.  Both the two-letter language code and the two-letter country code need to be lower case.\nNote that the Phrase Language AI setup dictates whether the region subtag is optional or not.  If the only models deployed to a profile explicitly specify or are customized with a target locale,  then a region subtag is mandatory.",
+            "example": "cs",
+            "x-constraints": "@ValidLocale"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "TranslationProfileRequestV1": {
+        "type": "object",
+        "required": [
+          "uid"
+        ],
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "UID for the translation profile",
+            "example": "CFUki8ptanoz1WAIYoXSH4"
+          }
+        }
+      },
+      "MtSettingSimplifiedV1": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/TranslationProfileRequestV1"
+          }
+        }
+      },
+      "TextTranslationsRequestV1": {
+        "properties": {
+          "sourceLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "sourceText": {
+            "type": "string",
+            "minimum": 1,
+            "maximum": 2000
+          },
+          "targetLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "mtSettings": {
+            "$ref": "#/components/schemas/MtSettingSimplifiedV1"
+          }
+        },
+        "required": [
+          "sourceText",
+          "targetLang"
+        ]
+      },
+      "TextTranslationsResponseV1": {
+        "type": "object",
+        "properties": {
+          "translatedText": {
+            "description": "Translated text",
+            "type": "string"
+          },
+          "sourceLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "targetLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          }
+        },
+        "required": [
+          "translatedText",
+          "sourceLang",
+          "targetLang"
+        ]
+      },
+      "SourceTextRequestV2": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The key of the source text. This is used to identify the source text in the response. Must be unique.",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "source": {
+            "type": "string",
+            "description": "The source text to be translated.",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "key",
+          "source"
+        ]
+      },
+      "ConsumerIdV2": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50,
+        "description": "Use short descriptive ID that represents the calling integration. E.g. JIRA_INTEGRATION, GDRIVE_SYNC, SHOPIFY_EXT:v1.2 etc."
+      },
+      "TextTranslationsRequestV2": {
+        "properties": {
+          "sourceLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "sourceTexts": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "items": {
+              "$ref": "#/components/schemas/SourceTextRequestV2"
+            }
+          },
+          "targetLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "mtSettings": {
+            "$ref": "#/components/schemas/MtSettingSimplifiedV1"
+          },
+          "consumerId": {
+            "$ref": "#/components/schemas/ConsumerIdV2"
+          }
+        },
+        "required": [
+          "sourceTexts",
+          "targetLang",
+          "consumerId"
+        ]
+      },
+      "TranslatedTextResponseV2": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          }
+        }
+      },
+      "TextTranslationsResponseV2": {
+        "type": "object",
+        "properties": {
+          "translatedTexts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslatedTextResponseV2"
+            }
+          },
+          "sourceLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "targetLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "consumerId": {
+            "$ref": "#/components/schemas/ConsumerIdV2"
+          }
+        },
+        "required": [
+          "translatedText",
+          "sourceLang",
+          "targetLang",
+          "consumerId"
+        ]
+      },
+      "ActionTypeEnumV1": {
+        "type": "string",
+        "enum": [
+          "CONVERTER_IMPORT",
+          "FILE_IMPORT",
+          "MT_GENERIC_PRETRANSLATE",
+          "QUALITY_ESTIMATION"
+        ],
+        "example": "MT_GENERIC_PRETRANSLATE"
+      },
+      "MtSettingsV1": {
+        "type": "object",
+        "properties": {
+          "usePhraseMTSettings": {
+            "type": "boolean",
+            "default": false,
+            "description": "Use Language AI to apply Machine Translation",
+            "example": true
+          },
+          "profile": {
+            "$ref": "#/components/schemas/TranslationProfileRequestV1"
+          }
+        }
+      },
+      "TranslationMemoryRequestV1": {
+        "type": "object",
+        "properties": {
+          "transMemory": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string",
+                "description": "Unique identifier of the translation memory"
+              }
+            }
+          },
+          "tmSourceLocale": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "tmTargetLocale": {
+            "$ref": "#/components/schemas/LanguageV1"
+          }
+        }
+      },
+      "TranslationMemoriesConfigV1": {
+        "type": "object",
+        "properties": {
+          "targetLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "transMemories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationMemoryRequestV1"
+            }
+          }
+        }
+      },
+      "FileTranslationsMetadataV1": {
+        "type": "object",
+        "properties": {
+          "sourceLang": {
+            "$ref": "#/components/schemas/LanguageV1"
+          },
+          "targetLangs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageV1"
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "actionTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionTypeEnumV1"
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "callbackUrl": {
+            "type": "string",
+            "description": "URI in [RFC 2396](https://datatracker.ietf.org/doc/html/rfc2396) format.",
+            "format": "uri"
+          },
+          "mtSettings": {
+            "$ref": "#/components/schemas/MtSettingsV1"
+          },
+          "transMemoriesConfig": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationMemoriesConfigV1"
+            }
+          }
+        },
+        "required": [
+          "sourceLang",
+          "targetLangs",
+          "actionTypes"
+        ]
+      },
+      "ActionStatusEnumV1": {
+        "type": "string",
+        "enum": [
+          "ERROR",
+          "OK",
+          "RUNNING"
+        ],
+        "example": "OK"
+      },
+      "ActionResultV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "random-uid"
+          },
+          "sourceLang": {
+            "type": "string",
+            "example": "en"
+          },
+          "targetLang": {
+            "type": "string",
+            "example": "cs"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ActionStatusEnumV1"
+          }
+        },
+        "required": [
+          "id",
+          "sourceLang",
+          "targetLang",
+          "status"
+        ]
+      },
+      "ActionV1": {
+        "type": "object",
+        "description": "Actions performed with the file. Each of the actions gets unique identifier to query the result.",
+        "properties": {
+          "actionType": {
+            "$ref": "#/components/schemas/ActionTypeEnumV1"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionResultV1"
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          }
+        },
+        "required": [
+          "actionType",
+          "results"
+        ]
+      },
+      "FileTranslationsResponseV1": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "description": "UID of the operation. UID can be used to query the result.",
+            "type": "string",
+            "example": "random-uid"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionV1"
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/FileTranslationsMetadataV1"
+          }
+        },
+        "required": [
+          "uid",
+          "actions",
+          "metadata"
+        ]
+      },
+      "QualityEstimationResponseV1": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number",
+            "format": "double",
+            "example": 0.42
+          }
+        },
+        "required": [
+          "score"
+        ]
+      },
+      "OrganizationUidV1": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequestV1": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "otpCode": {
+            "type": "string"
+          },
+          "organization": {
+            "$ref": "#/components/schemas/OrganizationUidV1"
+          }
+        },
+        "required": [
+          "password",
+          "userName"
+        ]
+      },
+      "TokenTypeEnumV1": {
+        "type": "string",
+        "enum": [
+          "Bearer"
+        ]
+      },
+      "LoginResponseV1": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "tokenType": {
+            "$ref": "#/components/schemas/TokenTypeEnumV1"
+          },
+          "expires": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "tokenType",
+          "expires"
+        ]
+      },
+      "TranslationEngineV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          },
+          "baseName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "glossarySupported": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GlossaryV1": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "TranslationProfileV1": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "engines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationEngineV1"
+            }
+          },
+          "glossaries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GlossaryV1"
+            }
+          },
+          "dateCreated": {
+            "type": "string"
+          }
+        }
+      },
+      "ListTranslationProfilesResponseV1": {
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "minimum": 0,
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationProfileV1"
+            }
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "headers": {
+      "MemsourceActionId": {
+        "description": "Memsource action identifier used for tracking request across services.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "ContentType": {
+        "description": "Describes format (its MIME type) of the content.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "Tms400": {
+        "description": "Bad request",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms401": {
+        "description": "Not authorized",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms403": {
+        "description": "Forbidden",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms404": {
+        "description": "Resource not found",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms405": {
+        "description": "Method not allowed",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms408": {
+        "description": "Timeout",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms410": {
+        "description": "Gone",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms415": {
+        "description": "Unsupported media type",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms429": {
+        "description": "Too many requests",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms500": {
+        "description": "Internal server error",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      },
+      "Tms501": {
+        "description": "Not implemented",
+        "headers": {
+          "Memsource-Action-Id": {
+            "$ref": "#/components/headers/MemsourceActionId"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Accept": {
+        "name": "Accept",
+        "description": "Media type which caller expects as a response.",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

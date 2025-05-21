@@ -43,15 +43,6 @@ const argv = yargs(hideBin(process.argv))
 
 const outputPath = path.resolve(argv.output);
 
-const isValidJson = (json) => {
-  try {
-    JSON.parse(json);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
 /**
  * Sorts API paths based on the first tag of the first method
  * 
@@ -83,6 +74,20 @@ const sortPaths = (paths) => {
   return sortedPaths;
 };
 
+const parseFileContent = (fileContent) => {
+  try {
+    // Try to parse as YAML first
+    return yaml.load(fileContent);
+  } catch (yamlError) {
+    // If YAML parsing fails, try JSON
+    try {
+      return JSON.parse(fileContent);
+    } catch (jsonError) {
+      throw new Error('Failed to parse file as YAML or JSON');
+    }
+  }
+};
+
 const main = async () => {
   try {
     let jsonData;
@@ -90,35 +95,16 @@ const main = async () => {
     if (argv.v2) {
       const swaggerPath = path.resolve(argv.v2);
       console.log(`Converting Swagger v2 from ${swaggerPath} to OpenAPI v3...`);
-      
-      // Handle both YAML and JSON for swagger input
       const fileContent = await readFile(swaggerPath, 'utf8');
-      
-      // Try to parse as YAML first, fallback to JSON if it fails
-      let swaggerContent;
-      try {
-        swaggerContent = yaml.load(fileContent);
-      } catch (e) {
-        // If YAML parsing fails, try JSON
-        try {
-          swaggerContent = JSON.parse(fileContent);
-        } catch (jsonError) {
-          throw new Error('Failed to parse file as YAML or JSON');
-        }
-      }
+      const swaggerContent = parseFileContent(fileContent);
       const options = { patch: true, warnOnly: true };
-      
-      // Convert Swagger v2 to OpenAPI v3
       const converted = await convertSwagger(swaggerContent, options);
       jsonData = converted.openapi;
     } else {
       const inputPath = path.resolve(argv.v3);
-      const data = await readFile(inputPath, 'utf8');
-      if (!isValidJson(data)) {
-        console.error('Invalid JSON format');
-        exit(1);
-      }
-      jsonData = JSON.parse(data);
+      console.log(`Processing OpenAPI v3 from ${inputPath}...`);
+      const fileContent = await readFile(inputPath, 'utf8');
+      jsonData = parseFileContent(fileContent);
     }
 
     if (!jsonData.paths) {

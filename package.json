@@ -12,6 +12,8 @@
     "prepare:tms:v4": "node scripts/convert-spec.js --v2 source/phrase-tms-v4.yaml -o docs/openapi/phrase-tms-v4.json",
     "prepare:tms:all": "node scripts/convert-spec.js --v2 source/phrase-tms-all.yaml -o docs/openapi/phrase-tms-all.json",
     "prepare:tms:latest": "node scripts/convert-spec.js --v2 source/phrase-tms-latest.yaml -o docs/openapi/phrase-tms-latest.json",
+    "prepare:idm": "node scripts/convert-spec.js --v3 source/phrase-idm.yaml -o docs/openapi/phrase-idm.json",
+    "prepare:language-ai": "node scripts/convert-spec.js --v3 source/phrase-language-ai.json -o docs/openapi/phrase-language-ai.json",
     "prepare": "run-p prepare:**"
   },
   "devDependencies": {
