@@ -32,7 +32,8 @@
                 "pages": [
                   "en/api-reference/phrase-strings",
                   "en/api-reference/phrase-tms",
-                  "en/api-reference/phrase-language-ai"
+                  "en/api-reference/phrase-language-ai",
+                  "en/api-reference/phrase-idm"
                 ]
               },
               {
