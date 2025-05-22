@@ -4,7 +4,7 @@
   "description": "Phrase Developer Portal",
   "type": "module",
   "scripts": {
-    "build:css": "sass --load-path=node_modules styles/global.scss docs/public/assets/css/styles.css",
+    "build:css": "sass --no-source-map --load-path=node_modules styles/global.scss docs/public/assets/css/styles.css",
     "dev:mintlify": "cd docs && mintlify dev",
     "dev:css": "npm run build:css -- --watch",
     "dev": "run-p dev:*",

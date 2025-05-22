@@ -1,6 +1,5 @@
 @use '@phrase/design-tokens/dist/web/tokens' as tokens;
 
-// Media query mixins
 @mixin breakpoint-large {
   @media (max-width: 900px) {
     @content;
@@ -21,19 +20,9 @@
   --color-text: #{tokens.$color-light-neutral-70};
   --color-table-border: #{tokens.$color-light-neutral-40};
 
-  background-color: #{tokens.$color-light-neutral-15};
-
   &.dark {
     --color-title: #{tokens.$color-light-neutral-15};
     --color-text: #{tokens.$color-light-neutral-40};
-    background-color: #{tokens.$color-light-neutral-85};
-  }
-}
-
-html {
-  background-color: #{tokens.$color-light-neutral-15};
-  &.dark {
-    background-color: #{tokens.$color-light-neutral-85};
   }
 }
 
@@ -52,7 +41,7 @@ table {
   max-width: 1200px;
   align-self: center;
   margin: auto;
-  padding: 2rem;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -79,6 +68,7 @@ table {
 
     @include breakpoint-medium {
       padding: 1rem 2rem;
+      height: 270px;
     }
     
     &__title {
@@ -106,6 +96,7 @@ table {
       font-size: 2.5rem;
       font-weight: 700;
       color: var(--color-title);
+      text-align: center;
     }
     
     &__description {
@@ -115,7 +106,6 @@ table {
     }
   }
 
-  // Grouped media queries
   @include breakpoint-large {
     .hero__title, 
     .content__title {
@@ -143,4 +133,9 @@ table {
   overflow: hidden;
   height: 64rem;
   background: radial-gradient(49.63% 57.02% at 58.99% -7.2%, rgba(3, 234, 179, 0.1) 39.4%, rgba(0, 0, 0, 0) 100%);
+}
+
+// Remove the default Mintlify background image from the sidebar's sticky header to make the custom gradient visible
+#sidebar-content div div.sticky {
+  background-image: none;
 }
