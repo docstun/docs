@@ -1,1 +1,2 @@
+echo "Running build:css before commit..."
 cd "$(dirname "$0")/.." && npm run build:css

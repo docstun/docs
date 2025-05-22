@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Phrase Developer Portal",
   "colors": {
-    "primary": "#027361",
+    "primary": "#000000",
     "light": "#03EAB3",
-    "dark": "#027361"
+    "dark": "#000000"
   },
   "favicon": "/public/assets/images/phrase-favicon.svg",
   "seo": {
@@ -245,6 +245,21 @@
       "label": "Get Started",
       "href": "https://phrase.com"
     }
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "background": {
+    "color": {
+      "light": "#FAFAFA",
+      "dark": "#212121"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view"
+    ]
   },
   "footer": {
     "socials": {

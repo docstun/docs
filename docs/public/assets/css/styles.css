@@ -1,24 +1,23 @@
 :root {
-  --color-primary: #027361;
-  --color-primary-light: #03eab3;
-  --color-primary-light-2: rgb(70, 250, 208);
-  --color-dark: #252828;
-  --color-gray: #3f4340;
-  --color-gray-light: #9ea2a1;
-  --color-white: #fafafa;
-  --color-hero-background: var(--color-primary);
-  --color-hero-title: var(--color-primary-light);
-  --color-hero-subtitle: var(--color-white);
-  --color-hero-button-text: var(--color-dark);
-  --color-hero-button-bg: var(--color-primary-light);
-  --color-hero-button-bg-hover: var(--color-primary-light-2);
-  --color-title: var(--color-dark);
-  --color-text: var(--color-gray);
-  --color-table-border: var(--color-gray-light);
+  --color-hero-background: #027361;
+  --color-hero-title: #03eab3;
+  --color-hero-subtitle: #fafafa;
+  --color-title: #292929;
+  --color-text: #505050;
+  --color-table-border: #c2c2c2;
+  background-color: #fafafa;
 }
 :root.dark {
-  --color-title: var(--color-white);
-  --color-text: var(--color-gray-light);
+  --color-title: #fafafa;
+  --color-text: #c2c2c2;
+  background-color: #212121;
+}
+
+html {
+  background-color: #fafafa;
+}
+html.dark {
+  background-color: #212121;
 }
 
 table {
@@ -34,10 +33,10 @@ table td {
   max-width: 1200px;
   align-self: center;
   margin: auto;
-  padding: 1.5rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 }
 #landing-page .hero {
   display: flex;
@@ -46,27 +45,53 @@ table td {
   padding: 1rem 4rem;
   gap: 0.5rem;
   height: 220px;
+  border-radius: 1rem;
   background-image: url("https://phrase.com/wp-content/uploads/2024/03/Subhero-Header-Image-Green-Phrase-TMS.png.webp");
   background-color: var(--color-hero-background);
   background-repeat: no-repeat;
   background-position: 40% 0%;
   background-size: cover;
-  border-radius: 1rem;
+}
+@media (max-width: 900px) {
+  #landing-page .hero {
+    padding: 1rem 3rem;
+  }
+}
+@media (max-width: 750px) {
+  #landing-page .hero {
+    padding: 1rem 2rem;
+  }
 }
 #landing-page .hero__title {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-hero-title);
 }
+@media (max-width: 900px) {
+  #landing-page .hero__title {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 750px) {
+  #landing-page .hero__title {
+    font-size: 1.5rem;
+    margin-right: 2rem;
+  }
+}
 #landing-page .hero__subtitle {
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--color-hero-subtitle);
 }
+@media (max-width: 750px) {
+  #landing-page .hero__subtitle {
+    font-size: 1.2rem;
+  }
+}
 #landing-page .content {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   align-self: center;
   align-items: center;
   max-width: 1050px;
@@ -76,10 +101,30 @@ table td {
   font-weight: 700;
   color: var(--color-title);
 }
+@media (max-width: 900px) {
+  #landing-page .content__title {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 750px) {
+  #landing-page .content__title {
+    font-size: 1.5rem;
+    margin-right: 2rem;
+  }
+}
 #landing-page .content__description {
   color: var(--color-text);
   max-width: 600px;
   text-align: center;
+}
+
+#custom-gradient-background {
+  position: absolute;
+  display: block;
+  inset: 0;
+  overflow: hidden;
+  height: 64rem;
+  background: radial-gradient(49.63% 57.02% at 58.99% -7.2%, rgba(3, 234, 179, 0.1) 39.4%, rgba(0, 0, 0, 0) 100%);
 }
 
 /*# sourceMappingURL=styles.css.map */
