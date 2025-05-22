@@ -6,7 +6,6 @@
   --color-gray: #3f4340;
   --color-gray-light: #9ea2a1;
   --color-white: #fafafa;
-
   --color-hero-background: var(--color-primary);
   --color-hero-title: var(--color-primary-light);
   --color-hero-subtitle: var(--color-white);
@@ -15,8 +14,8 @@
   --color-hero-button-bg-hover: var(--color-primary-light-2);
   --color-title: var(--color-dark);
   --color-text: var(--color-gray);
+  --color-table-border: var(--color-gray-light);
 }
-
 :root.dark {
   --color-title: var(--color-white);
   --color-text: var(--color-gray-light);
@@ -26,85 +25,61 @@ table {
   display: table !important;
   border-collapse: collapse;
 }
-
 table td {
-  border: solid 1px #dadada;
+  border: solid 1px var(--color-table-border);
   padding: 8px 16px !important;
 }
 
 #landing-page {
   max-width: 1200px;
   align-self: center;
-  margin: auto auto;
-  padding: 3.5rem 1.5rem 3.5rem 1.5rem;
+  margin: auto;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
-
 #landing-page .hero {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 4rem;
-  gap: 1rem;
-  height: 400px;
-  background-image: url('https://phrase.com/wp-content/uploads/2024/03/Subhero-Header-Image-Green-Phrase-TMS.png.webp');
+  padding: 1rem 4rem;
+  gap: 0.5rem;
+  height: 220px;
+  background-image: url("https://phrase.com/wp-content/uploads/2024/03/Subhero-Header-Image-Green-Phrase-TMS.png.webp");
   background-color: var(--color-hero-background);
   background-repeat: no-repeat;
-  background-position-x: 40%;
-  background-position-y: 0%;
+  background-position: 40% 0%;
   background-size: cover;
   border-radius: 1rem;
 }
-
-#landing-page .hero .hero__title {
+#landing-page .hero__title {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-hero-title);
 }
-
-#landing-page .hero .hero__subtitle {
+#landing-page .hero__subtitle {
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--color-hero-subtitle);
 }
-
-#landing-page .hero .hero__button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: var(--color-hero-button-text);
-  background-color: var(--color-hero-button-bg);
-  align-self: start;
-  border-radius: 1.5rem;
-  padding: 0.5rem 1.5rem;
-  margin-top: 0.5rem;
-}
-
-#landing-page .hero .hero__button:hover {
-  background-color: var(--color-hero-button-bg-hover);
-}
-
 #landing-page .content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 0.5rem;
   align-self: center;
   align-items: center;
   max-width: 1050px;
 }
-
-#landing-page .content .content__title {
+#landing-page .content__title {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-title);
 }
-
-#landing-page .content .content__description {
+#landing-page .content__description {
   color: var(--color-text);
   max-width: 600px;
   text-align: center;
 }
+
+/*# sourceMappingURL=styles.css.map */

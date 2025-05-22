@@ -30,6 +30,15 @@ To start the development server, run the following command from the root of your
 npm run dev
 ```
 
+### Custom Styles
+
+Custom styles should be placed in the `styles/global.scss` file. These styles will be:
+
+- Automatically compiled when you run `npm run dev`
+- Processed before committing code via Husky pre-commit hooks
+
+This ensures your custom styling is properly applied throughout the documentation.
+
 **Note:** Search functionality is not available in development mode.
 
 ### Sorting and converting OpenAPI Specification
