@@ -1,5 +1,18 @@
 @use '@phrase/design-tokens/dist/web/tokens' as tokens;
 
+// Media query mixins
+@mixin breakpoint-large {
+  @media (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin breakpoint-medium {
+  @media (max-width: 750px) {
+    @content;
+  }
+}
+
 :root {
   --color-hero-background: #{tokens.$color-light-brand-80};
   --color-hero-title: #{tokens.$color-light-brand-50};
@@ -60,11 +73,11 @@ table {
       size: cover;
     }
 
-    @media (max-width: 900px) {
+    @include breakpoint-large {
       padding: 1rem 3rem;
     }
 
-    @media (max-width: 750px) {
+    @include breakpoint-medium {
       padding: 1rem 2rem;
     }
     
@@ -72,25 +85,12 @@ table {
       font-size: 2.5rem;
       font-weight: 700;
       color: var(--color-hero-title);
-      
-      @media (max-width: 900px) {
-        font-size: 2rem;
-      }
-      
-      @media (max-width: 750px) {
-        font-size: 1.5rem;
-        margin-right: 2rem;
-      }
     }
     
     &__subtitle {
       font-size: 1.4rem;
       font-weight: 500;
       color: var(--color-hero-subtitle);
-
-      @media (max-width: 750px) {
-        font-size: 1.2rem;
-      }
     }
   }
   
@@ -106,21 +106,32 @@ table {
       font-size: 2.5rem;
       font-weight: 700;
       color: var(--color-title);
-
-      @media (max-width: 900px) {
-        font-size: 2rem;
-      }
-      
-      @media (max-width: 750px) {
-        font-size: 1.5rem;
-        margin-right: 2rem;
-      }
     }
     
     &__description {
       color: var(--color-text);
       max-width: 600px;
       text-align: center;
+    }
+  }
+
+  // Grouped media queries
+  @include breakpoint-large {
+    .hero__title, 
+    .content__title {
+      font-size: 2rem;
+    }
+  }
+  
+  @include breakpoint-medium {
+    .hero__title,
+    .content__title {
+      font-size: 1.5rem;
+      margin-right: 2rem;
+    }
+    
+    .hero__subtitle {
+      font-size: 1.2rem;
     }
   }
 }

@@ -1,7 +1,10 @@
 ---
-title: Home
 mode: custom
 ---
+
+import { LanguageAiLogo } from '/snippets/logos/logo-language-ai.mdx';
+import { StringsLogo } from '/snippets/logos/logo-strings.mdx';
+import { TmsLogo } from '/snippets/logos/logo-tms.mdx';
 
 <div id="landing-page">
   <div class="hero">
@@ -14,16 +17,15 @@ mode: custom
     <div class="content__description">Phrase offers a suite of APIs to help you manage localization at scale - from translating dynamic content to integrating with your translation workflows.</div>
   
     <Columns cols="3">
-      <Card title="Phrase Strings Reference" icon="link" href="/en/api/strings/introduction">
+      <Card title="Phrase Strings Reference" icon={<StringsLogo />} href="/en/api/strings/introduction">
         As a string management platform for key-based translations, Phrase Strings extracts segments of words from code repositories or design files to manage the entire translation process.
       </Card>
-      <Card title="Phrase TMS Reference" icon="link" href="/en/api/tms/latest/introduction">
+      <Card title="Phrase TMS Reference" icon={<TmsLogo />} href="/en/api/tms/latest/introduction">
         The leading translation management system that automates, translates, and manages content with intelligence and at scale
       </Card>
-      <Card title="Phrase Language AI Reference" icon="link" href="/en/api/language-ai/introduction">
+      <Card title="Phrase Language AI Reference" icon={<LanguageAiLogo />} href="/en/api/language-ai/introduction">
         Our sophisticated, secure and scalable AI translation tool capabilities including MT and LLM aggregation, selection and quality assessment.
       </Card>
     </Columns>
   </div>
 </div>
-

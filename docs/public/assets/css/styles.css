@@ -67,26 +67,10 @@ table td {
   font-weight: 700;
   color: var(--color-hero-title);
 }
-@media (max-width: 900px) {
-  #landing-page .hero__title {
-    font-size: 2rem;
-  }
-}
-@media (max-width: 750px) {
-  #landing-page .hero__title {
-    font-size: 1.5rem;
-    margin-right: 2rem;
-  }
-}
 #landing-page .hero__subtitle {
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--color-hero-subtitle);
-}
-@media (max-width: 750px) {
-  #landing-page .hero__subtitle {
-    font-size: 1.2rem;
-  }
 }
 #landing-page .content {
   display: flex;
@@ -101,21 +85,26 @@ table td {
   font-weight: 700;
   color: var(--color-title);
 }
+#landing-page .content__description {
+  color: var(--color-text);
+  max-width: 600px;
+  text-align: center;
+}
 @media (max-width: 900px) {
+  #landing-page .hero__title,
   #landing-page .content__title {
     font-size: 2rem;
   }
 }
 @media (max-width: 750px) {
+  #landing-page .hero__title,
   #landing-page .content__title {
     font-size: 1.5rem;
     margin-right: 2rem;
   }
-}
-#landing-page .content__description {
-  color: var(--color-text);
-  max-width: 600px;
-  text-align: center;
+  #landing-page .hero__subtitle {
+    font-size: 1.2rem;
+  }
 }
 
 #custom-gradient-background {
